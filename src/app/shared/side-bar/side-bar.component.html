@@ -1,0 +1,42 @@
+<ul class="navview-menu animated fadeIn" *ngIf="menuItems.length > 0 && authService.isAuthenticated()">
+    <li class="item-separator"></li>
+    <li class="c-pointer"  *ngFor="let item of menuItems" >
+        <a *ngIf="item.subMenu.length > 0" class="dropdown-toggle">
+            <span class="icon "><i [class]="item.icon"></i></span>
+            <span class="caption ">{{item.title}}</span>
+            <span class="badges"><span class="badge inline" >{{item.subMenu.length}}</span></span>
+        </a>
+        <a *ngIf="item.subMenu.length === 0" [routerLink]="item.url"  id="pane-toggle" >
+            <span class="icon"><i [class]="item.icon"></i></span>
+            <span class="caption ">{{item.title}}</span>
+        </a>
+        <ul data-role="dropdown" class="navview-menu" style="display: none;">
+            <li class="margen-submenu">
+                <a *ngFor="let subItem of item.subMenu" [routerLink]="subItem.url" id="pane-toggle" >
+                    <span class="icon d-flex flex-align-center justify-content-end pr-2"><i [class]="subItem.icon"></i></span>
+                    <span class="caption">{{ subItem.title }}</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>
+<!-- caundo no hay data en el array categorias -->
+<div class="item-header ml-2" *ngIf="menuItems.length === 0">
+    <div class="card">
+        <div class="card-body">
+            <div class="alert alert-primary flex-1 pl-2" role="alert">
+                Menu no disponible aun, intente actualizando la página!
+            </div>
+        </div>
+    </div>
+</div>
+<!-- caundo no se loggean -->
+<div class="item-header ml-2" *ngIf="!authService.isAuthenticated() ">
+    <div class="card">
+        <div class="card-body">
+            <div class="alert alert-primary flex-1 pl-2" role="alert">
+                No estás autentificado
+            </div>
+        </div>
+    </div>
+</div>

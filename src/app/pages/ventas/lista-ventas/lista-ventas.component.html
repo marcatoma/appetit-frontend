@@ -1,0 +1,261 @@
+<div class="card">
+  <div class="card-body">
+    <!-- Barra para añadir -->
+    <div class="row">
+      <div class="cell-3 text-left">
+        <div class="d-flex flex-justify-start">
+          <h5>Lista cajas</h5>
+        </div>
+      </div>
+      <div class="cell-3 offset-6 text-right">
+        <div class="d-flex flex-justify-end">
+          <a
+            class="button primary shadowed btn-block"
+            routerLink="/dashboard/creararqueo"
+            >Añadir</a
+          >
+        </div>
+      </div>
+    </div>
+    <!-- Acciones y input para filtrar -->
+    <div class="row">
+      <div class="cell-9 d-flex justify-content-end flex-wrap">
+        <div
+          class="w-75-xxl w-75-xl w-100-lg d-flex justify-content-around flex-wrap"
+        >
+          <form class="form-inline">
+            <div class="form-group">
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  name="dp"
+                  [(ngModel)]="fechaInico"
+                  ngbDatepicker
+                  #d="ngbDatepicker"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-secondary calendar"
+                    (click)="d.toggle()"
+                    type="button"
+                  ></button>
+                </div>
+              </div>
+            </div>
+          </form>
+          <form class="form-inline">
+            <div class="form-group">
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  name="dp"
+                  [(ngModel)]="fechaFin"
+                  ngbDatepicker
+                  #d2="ngbDatepicker"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-secondary calendar"
+                    (click)="d2.toggle()"
+                    type="button"
+                  ></button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="cell-3">
+        <button class="button info shadowed btn-block">Buscar</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="cell-sm">
+        <table class="table row-hover row-border">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Monto</th>
+              <th>Fecha</th>
+              <th>Descripción</th>
+              <th>T. pago</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let venta of ventas">
+              <td>
+                {{ venta.cliente.nombres + " " + venta.cliente.apellidos }}
+              </td>
+              <td>" $ " {{ venta.total }}</td>
+              <td>{{ venta.fecha }}</td>
+              <td>Efectivo</td>
+              <td>Ninguna</td>
+              <td>
+                <div class="row alinear">
+                  <div class="cell-sm-1 cell-sm-3 cell-lg-3">
+                    <button
+                      class="button shadowed yellow"
+                      placement="bottom"
+                      ngbTooltip="Detalle cliente"
+                      (click)="abrirModalDetalleCliente(modalDetalleCliente)"
+                    >
+                      <i class="fas fa-user-tie"></i>
+                    </button>
+                  </div>
+                  <div class="cell-sm-1 cell-sm-3 cell-lg-3">
+                    <button
+                      class="button shadowed warning"
+                      placement="bottom"
+                      ngbTooltip="Detalle pedido"
+                      (click)="abrirModalDetallePedido(modalDetallePedido)"
+                    >
+                      <i class="fas fa-clipboard-list"></i>
+                    </button>
+                  </div>
+                  <div class="cell-sm-1 cell-sm-3 cell-lg-3">
+                    <button
+                      class="button shadowed primary"
+                      placement="bottom"
+                      ngbTooltip="Editar pedido"
+                    >
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Spinner -->
+    <div class="row">
+      <div class="cell">
+        <div>
+          <!--<app-spinner></app-spinner>-->
+        </div>
+      </div>
+    </div>
+    <!-- paginador -->
+    <div class="row">
+      <div class="cell-12 d-flex flex-justify-end">
+        <!-- componente paginador -->
+        <!-- <app-paginator
+          *ngIf="paginador"
+          [paginador]="paginador"
+          [path]="path"
+        ></app-paginator> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal para ver otros detalles del cliente -->
+<ng-template #modalDetalleCliente let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Detalles Cliente</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="cell-12 cell-12-sm">
+        <p class="mt-2"><strong>Cliente: </strong> Juan Perez</p>
+        <p class="mt-2"><strong>Cédula: </strong> 0105566046</p>
+        <p class="mt-2"><strong>Email: </strong> Juan7Perez@gmail.com</p>
+        <p class="mt-2"><strong>Dirección: </strong> Checa la playa</p>
+        <p class="mt-2"><strong>Teléfono: </strong> 0987535645</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer d-flex justify-content-around">
+    <button
+      type="button"
+      class="button shadowed alert mb-0 rounded-0"
+      (click)="cerrarModal()"
+    >
+      Aceptar
+    </button>
+  </div>
+</ng-template>
+<!-- modal para ver otros detalles del arqueo -->
+<ng-template #modalDetallePedido let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Detalles Cliente</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table row-hover row-border">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Contiene</th>
+          <th>Categoría</th>
+          <th>Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--Tr de los productos-->
+        <tr *ngFor="let prod of pedido.items">
+          <td>
+            <img
+              src="{{ api }}product/img/{{ prod.producto.imagen }}"
+              alt=""
+              width="50px"
+              height="50px"
+            />
+          </td>
+          <td>{{ prod.producto.nombre }}</td>
+          <td>{{ prod.cantidad }}</td>
+          <td>{{ prod.producto.categoria.nombre }}</td>
+          <td>
+            {{ calcularImporte(prod.cantidad, prod.producto.precio) }}
+          </td>
+        </tr>
+        <!--Tr de los combos-->
+        <tr *ngFor="let comb of pedido.combos">
+          <td>
+            <img
+              src="{{ api }}product/img/{{ comb.combo.imagen }}"
+              alt=""
+              width="50px"
+              height="50px"
+            />
+          </td>
+          <td>{{ comb.combo.nombre }}</td>
+          <td>{{ comb.cantidad }}</td>
+          <td>{{ comb.combo.categoria.nombre }}</td>
+          <td>
+            {{ calcularImporte(comb.cantidad, comb.combo.precio) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer d-flex justify-content-around">
+    <button
+      type="button"
+      class="button shadowed alert mb-0 rounded-0"
+      (click)="cerrarModal()"
+    >
+      Aceptar
+    </button>
+  </div>
+</ng-template>

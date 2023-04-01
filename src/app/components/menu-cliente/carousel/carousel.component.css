@@ -1,0 +1,18 @@
+.altura-img {
+    width: 100%;
+    height: 250px;
+}
+
+.posicionamiento {
+    z-index: 0 !important;
+}
+
+.card-body {
+    padding: 2px;
+}
+
+@media screen and (min-width: 1200px) {
+    .card {
+        width: 85%;
+    }
+}

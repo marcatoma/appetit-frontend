@@ -1,0 +1,81 @@
+<div class="card text-white d-flex flex-align-center justify-content-center w-75" style="margin-bottom: 0px; background-color: rgba(0, 0, 0, 0.7)" *ngIf="productos.length > 0">
+    <div class="card-body">
+        <p class="text-leader pb-1" *ngIf="!titulo">
+            <b>{{ productos[0].categoria.nombre }}</b>
+        </p>
+        <p class="text-leader pb-1" *ngIf="titulo">
+            <b>{{titulo}}</b>
+        </p>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="flex-container wrap">
+            <div class="alert alert-primary" role="alert" *ngIf="productos.length == 0">
+                No existen productos en esta sección.
+            </div>
+            <div *ngFor="let producto of productos">
+                <div class="card-producto" (click)="productoModal(producto, modalProducto)">
+                    <div class="imgBox">
+                        <img src="{{ api + 'product/img/' + producto.imagen }}" [alt]="producto.nombre" />
+                    </div>
+                    <div class="details d-flex flex-align-center justify-content-center">
+                        <div class="textContent">
+                            <h3>
+                                <b>{{ producto.nombre }}</b>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="description">
+                        <div class="icon">
+                            <i class="fas fa-dollar-sign"></i> {{ producto.precio }}
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #modalProducto let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">{{ producto.nombre }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="cerrarModalDetalle()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body flex-style">
+        <div class="cont-description">
+            <div class="img-container thumbnail mb-2">
+                <img [src]="api + 'product/img/' + producto.imagen" [alt]="producto.nombre" />
+            </div>
+            <span>{{ producto.descripcion }}</span>
+            <h5>Precio:
+                <span>{{ producto.precio | currency }}</span>
+            </h5>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="d-flex justify-content-center align-content-center w-100 mb-2">
+            <button type="button" [disabled]="item.cantidad == 1" class="button shadowed mr-2" (click)="restarCantidad()">
+        <i class="fas fa-minus"></i>
+      </button>
+            <span class="text-leader pt-1"><b>{{ item.cantidad }}</b></span
+      >
+      <button
+        type="button"
+        class="button shadowed ml-2"
+        (click)="sumarCantidad()"
+      >
+        <i class="fas fa-plus"></i>
+      </button>
+    </div>
+    <button
+      type="button"
+      class="button shadowed btn-agregar-producto"
+      (click)="agregarProducto(producto)"
+    >
+      Agregar a mi pedido
+    </button>
+  </div>
+</ng-template>

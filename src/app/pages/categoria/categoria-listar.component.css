@@ -1,0 +1,53 @@
+/* para los alerts msg */
+
+.bg-black {
+    background-color: black;
+    color: white;
+}
+.button-usuario {
+    width: 20%;
+}
+
+.button-save {
+    background-color: black;
+    color: white;
+}
+
+button:focus {
+    outline: none;
+    outline: none;
+}
+
+.invalid_feedback{
+    display: block !important;
+}
+.p-invalid {
+    color: red;
+}
+
+
+
+/* Tabla */
+
+.row-width {
+    width: 40%;
+}
+
+
+
+.alinear {
+    display: flex;
+    align-items: center;
+}
+
+@media screen and (max-width: 1300px) {
+    .row-width {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .row-width {
+        width: 80%;
+    }
+}

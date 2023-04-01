@@ -1,0 +1,261 @@
+<div class="card">
+  <div class="card-body">
+    <!-- Barra para añadir -->
+    <div class="row">
+      <div class="cell-3 text-left">
+        <div class="d-flex flex-justify-start">
+          <h5>Lista cajas</h5>
+        </div>
+      </div>
+      <div class="cell-3 offset-6 text-right">
+        <div class="d-flex flex-justify-end">
+          <a
+            class="button primary shadowed btn-block"
+            routerLink="/dashboard/creararqueo"
+            >Añadir</a
+          >
+        </div>
+      </div>
+    </div>
+    <!-- Acciones y input para filtrar -->
+    <div class="row">
+      <div class="cell-9 d-flex justify-content-end flex-wrap">
+        <div
+          class="w-75-xxl w-75-xl w-100-lg d-flex justify-content-around flex-wrap"
+        >
+          <form class="form-inline">
+            <div class="form-group">
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  name="dp"
+                  [(ngModel)]="fechaInico"
+                  ngbDatepicker
+                  #d="ngbDatepicker"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-secondary calendar"
+                    (click)="d.toggle()"
+                    type="button"
+                  ></button>
+                </div>
+              </div>
+            </div>
+          </form>
+          <form class="form-inline">
+            <div class="form-group">
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  name="dp"
+                  [(ngModel)]="fechaFin"
+                  ngbDatepicker
+                  #d2="ngbDatepicker"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-secondary calendar"
+                    (click)="d2.toggle()"
+                    type="button"
+                  ></button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="cell-3">
+        <button class="button info shadowed btn-block" (click)="changeFechas()">
+          Buscar
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="cell-sm">
+        <table class="table row-hover row-border">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Caja</th>
+              <th>Mon. Inicial</th>
+              <th>Mon. Final</th>
+              <th>Efectivo</th>
+              <th>Bancos</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let arq of arqueos">
+              <td>{{ arq.usuario.nombre }}</td>
+              <td>{{ arq.caja.nombreCaja }}</td>
+              <td>{{ " $ " + arq.montoInicial }}</td>
+              <td>{{ " $ " + arq.montoFinal }}</td>
+              <td>{{ " $ " + arq.efectivo }}</td>
+              <td>{{ " $ " + arq.bancos }}</td>
+              <td>
+                <div class="row row-width alinear">
+                  <div class="cell-sm-4">
+                    <div
+                      class="d-flex justify-content-center mt-2"
+                      *ngIf="!arq.isOpen"
+                    >
+                      <span class="bgBange rounded">Cerrado</span>
+                    </div>
+                    <button class="button shadowed primary" *ngIf="arq.isOpen">
+                      <span class="" (click)="cerrarArqueoCaja(arq)"
+                        >Cerrar caja</span
+                      >
+                    </button>
+                  </div>
+                  <div class="cell-sm-4">
+                    <button
+                      class="button shadowed yellow"
+                      (click)="abrirModalDetalleArqueo(modalDetalleArqueo, arq)"
+                    >
+                      <span class="">Detalles</span>
+                    </button>
+                  </div>
+                  <div class="cell-sm-4">
+                    <button class="button outline warning">
+                      <span class="">Editar</span>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Spinner -->
+    <div class="row">
+      <div class="cell">
+        <div>
+          <!--<app-spinner></app-spinner>-->
+        </div>
+      </div>
+    </div>
+    <!-- paginador -->
+    <div class="row">
+      <div class="cell-12 d-flex flex-justify-end">
+        <!-- componente paginador -->
+        <app-paginator
+          *ngIf="paginador"
+          [paginador]="paginador"
+          [path]="path"
+        ></app-paginator>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal para ver otros detalles del arqueo -->
+<ng-template #modalDetalleArqueo let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Detalles</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="cell-6 cell-12-sm">
+        <p class="mt-2">
+          <strong>Usaurio: </strong>{{ arqueoModal.usuario.nombre }}
+        </p>
+        <p class="mt-2">
+          <strong>Caja: </strong>{{ arqueoModal.caja.nombreCaja }}
+        </p>
+        <p class="mt-2">
+          <strong>N/C de Caja: </strong>{{ arqueoModal.caja.numeroCaja }}
+        </p>
+        <p class="mt-2">
+          <strong>Usuario: </strong
+          >{{
+            arqueoModal.usuario.username +
+              " - cl: " +
+              arqueoModal.usuario.cedula
+          }}
+        </p>
+      </div>
+      <div class="cell-6 cell-12-sm">
+        <p class="mt-2">
+          <strong>F. Apertura: </strong
+          >{{ arqueoModal.fechaApertura | date: "dd/MM/yyyy h:mm:ss a" }}
+        </p>
+        <p class="mt-2">
+          <strong>F. Cierre: </strong
+          >{{ arqueoModal.fechaCierre | date: "dd/MM/yyyy h:mm:ss a" }}
+        </p>
+        <p class="mt-2">
+          <strong>Descripción apertura:</strong>{{ arqueoModal.descripcion }}
+        </p>
+        <p class="mt-2">
+          <strong>Descripción cierre:</strong
+          >{{ arqueoModal.descripcionCierre }}
+        </p>
+      </div>
+    </div>
+    <!--Table For details-->
+    <table class="table row-hover row-border">
+      <thead>
+        <th>Mon. Inicial</th>
+        <th>Mon. Final</th>
+        <th>Mon. Diferencia</th>
+        <th>Mon. Efectivo</th>
+        <th>Mon. Bancos</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ " $ " + arqueoModal.montoInicial }}</td>
+          <td>{{ " $ " + arqueoModal.montoFinal }}</td>
+          <td>{{ " $ " + arqueoModal.diferencia }}</td>
+          <td>{{ " $ " + arqueoModal.efectivo }}</td>
+          <td>{{ " $ " + arqueoModal.bancos }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <!--Table For transacctions-->
+    <table class="table row-hover row-border">
+      <thead>
+        <th>id</th>
+        <th>monto</th>
+        <th>tipoPago</th>
+        <th>descripcion</th>
+        <th>fecha/hora</th>
+        <th>detalle pedido</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>movi</td>
+          <td>$20.2</td>
+          <td>efectivo</td>
+          <td>descrip</td>
+          <td>fecha</td>
+          <td>
+            <button class="button shadowed yellow">
+              <i class="fa fa-eye"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer d-flex justify-content-around">
+    <button
+      type="button"
+      class="button shadowed alert mb-0 rounded-0"
+      (click)="modal.dismiss('Cross click')"
+    >
+      Aceptar
+    </button>
+  </div>
+</ng-template>

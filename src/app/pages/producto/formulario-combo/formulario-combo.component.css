@@ -1,0 +1,25 @@
+.bg-black {
+    background-color: black;
+    color: white;
+}
+.button-usuario {
+    width: 20%;
+}
+
+.button-save {
+    background-color: black;
+    color: white;
+}
+
+button:focus {
+    outline: none;
+    outline: none;
+}
+
+.invalid_feedback{
+    display: block !important;
+}
+.descripcion {
+    background-color: #f8f8f8;
+    border: 1px #d9d9d9 solid;
+}

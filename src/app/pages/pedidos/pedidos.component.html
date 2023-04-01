@@ -1,0 +1,92 @@
+<div class="card">
+  <div class="card-body">
+    <div class="flex-container wrap">
+      <div
+        class="alert alert-primary"
+        role="alert"
+        *ngIf="listaPedidos.length == 0"
+      >
+        Menu no disponible aun, intente actualizando la página!
+      </div>
+      <div *ngFor="let mesa of mesasPedidos">
+        <div
+          class="card-mesa d-flex justify-content-center flex-align-center"
+          (click)="filtrarPedidosPorMesa(mesa.nombre, modalPedido)"
+        >
+          <div>
+            <h2 class="text-leader d-inline pos-relative ml-4 pr-4">
+              {{ mesa.nombre }}
+            </h2>
+          </div>
+          <span
+            class="badge inside bg-red fg-white mt-2 mr-2 badgeCantidad"
+            style="background-color: #0366d6; color: white"
+            >{{ numeroPedidos(mesa.id) }}</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal apra ver los pedidos por mesa -->
+<ng-template #modalPedido let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Pedidos de {{ nombreMesa }}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body flex-style">
+    <div class="cont-description">
+      <table class="table row-hover row-border">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Cliente</th>
+            <th>Mesa</th>
+            <th>Hora</th>
+            <th>Total</th>
+            <th>Finalizar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pedido of pedidosPorMesa; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos }}</td>
+            <td>{{ pedido.mesa.nombre }}</td>
+            <td>{{ pedido.hora | date: "h:mm a" }}</td>
+            <td>{{ pedido.total }}</td>
+            <td>
+              <div class="d-flex justify-content-start">
+                <button
+                  class="button shadowed yellow"
+                  [routerLink]="['/dashboard/venta/', pedido.id]"
+                >
+                  <i class="fas fa-concierge-bell"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="w-100 d-flex justify-content-end">
+        <code class="mr-1">Total a cancelar:</code>
+        <code class="info">&#36;30</code>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      class="button shadowed"
+      style="color: red"
+      (click)="modal.dismiss('Cross click')"
+    >
+      Cerrar
+    </button>
+  </div>
+</ng-template>

@@ -1,0 +1,126 @@
+<div class="container-fluid">
+    <div class="grid">
+        <div class="row w-100 d-flex justify-content-center">
+            <div class="cell-sm cell-md-10 cell-xl-6 cell-xxl-6">
+                <form autocomplete="off" [formGroup]="miForm">
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <div class="w-100 d-flex justify-content-center border-bottom">
+                                <h5 class="mb-2">Cuenta</h5>
+                                <hr>
+                            </div>
+                            <div class="row">
+                                <div class="cell-md-12 pb-0">
+                                    <!--  user -->
+                                    <p>Usuario:</p>
+                                    <div class="mb-4">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="border w-100 d-flex justify-content-center align-items-center  text-leader2">Tu usuario: {{userName}}</div>
+                                            <button class="button "
+                                                    (click)="abrirModalUsuario(modalUsuario)">
+                                                <i class='fas fa-pen'></i>
+                                            </button>
+                                        </div>
+                                        
+                                    </div>
+                                    <!-- contraseñas -->
+                                    <div class="mb-1 border-top">
+                                        <p class="my-1">Contraseña:</p>
+                                        <input  type="password" 
+                                                data-role="input" 
+                                                placeholder="Contraseña actual"
+                                                formControlName="contraActual">
+                                        <span   class="mt-0"  
+                                                appDrErrorMsg 
+                                                [valido]="!tieneError('contraActual')"
+                                                [mensaje]="msgErrorContraAct">
+                                        </span>       
+                                    </div>
+                                    <div class="mb-1">
+                                        <input  type="password" 
+                                                data-role="input" 
+                                                placeholder="Contraseña nueva"
+                                                formControlName="contraNueva">
+                                        <span   class="mt-0"  
+                                                appDrErrorMsg 
+                                                [valido]="!tieneError('contraNueva')"
+                                                [mensaje]="msgErrorContraNue">
+                                        </span> 
+                                    </div>
+                                    <div class="mb-1">
+                                        <input  type="password" 
+                                                data-role="input" 
+                                                placeholder="Confirmar contraseña"
+                                                formControlName="contraConfirm">
+                                        <span   class="mt-0"  
+                                                appDrErrorMsg 
+                                                [valido]="!tieneError('contraConfirm')"
+                                                [mensaje]="msgErrorContraCon">
+                                        </span>    
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w-100 d-flex justify-content-between mt-3 mb-2">
+                                <button class="button shadowed button-usuario "
+                                        (click)="regresar()">
+                                  Cancelar
+                                </button>
+                                <button class="button shadowed button-usuario button-save border-radius-2 "
+                                        (click)="editPassword()">
+                                  Actualizar constraseña
+                                </button>
+                            </div>
+                      </div>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para editar usuario-->
+<ng-template #modalUsuario let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Actualizar Usuario</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <form autocomplete="off" [formGroup]="miForm">
+            <div class="mb-1">
+                <input  type="text" 
+                        data-role="input"
+                        formControlName="usuario">
+                <span   appDrErrorMsg 
+                        [valido]="!tieneError('usuario')"
+                        [mensaje]="usuarioMSgError">
+                </span>
+            </div>
+            <div class="mb-1">
+                <input  type="password" 
+                        data-role="input" 
+                        placeholder="Contraseña"
+                        formControlName="contraActual">
+                <span   class="mt-0"  
+                        appDrErrorMsg 
+                        [valido]="!tieneError('contraActual')"
+                        [mensaje]="msgErrorContraAct">
+                </span>       
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="w-100 d-flex justify-content-between mt-3 mb-2">
+            <button class="button shadowed button-usuario "
+                    (click)="cerrarModalUsuario()">
+              Cancelar
+            </button>
+            <button class="button shadowed button-usuario button-save border-radius-2 "
+                    (click)="editUsuario()">
+              Guardar
+            </button>
+        </div>
+    </div>
+  </ng-template>
+
+                

@@ -1,0 +1,33 @@
+<div class="card">
+  <div class="card-body">
+    <h3>Acceso rápido</h3>
+    <div class="grid">
+      <div class="row">
+        <div class="cell-xl-3 cell-xxl-3 cell-lg-3 cell-md-3 cell-sm-12   d-flex justify-content-center">
+            <img src="../../../assets/img/items.png" class="w-100-xxl w-100-xl w-100-lg w-100-md w-50-sm w-100">
+        </div>
+        <div class="cell-xl-9 cell-xxl-9 cell-lg-9 cell-md-9 cell-sm-12">
+          <div class="flex-container wrap">
+            <div
+              class="alert alert-primary"
+              role="alert"
+              *ngIf="menu.length == 0">
+              Menu no disponible aun, intente actualizando la página!
+            </div>
+            <div *ngFor="let item of menu">
+              <div class="card-menu d-flex justify-content-center flex-align-center c-pointer"
+                   *ngIf="item.subMenu.length === 0"
+                   (click)="navegar(item.url)">
+                <div>
+                  <p class="text-secondary text-center">
+                    {{item.title}}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

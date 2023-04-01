@@ -1,0 +1,46 @@
+.side-bar {
+    height: calc(100% - 0px);
+    width: 100%;
+}
+
+.contenido {
+    padding-top: 52px;
+}
+
+.navview-content {
+    background-color: #eee;
+}
+
+.navview .navview-content,
+.navview .navview-pane {
+    display: block;
+    transition: all .1s linear;
+    min-height: 100%;
+    height: 100%;
+}
+
+.navview .navview-pane.open {
+    /* para que aparesca con el escroll en movimiento */
+    position: fixed;
+    word-wrap: break-word;
+    transform: translate3d(0, 0, 0);
+}
+
+.boton-float {
+    position: fixed;
+    bottom: 70px;
+    right: 10px;
+    z-index: 99;
+}
+
+@media screen and (min-width: 1000px) {
+    .contenido {
+        padding-top: 0px;
+    }
+}
+
+@media screen and (min-width: 765px) {
+    .contenido {
+        padding-top: 0px;
+    }
+}

@@ -1,0 +1,187 @@
+<div class="card">
+  <div class="card-body">
+    <!-- Acciones y input para filtrar -->
+    <div class="row">
+      <div class="cell-9 d-flex justify-content-end flex-wrap">
+        <div
+          class="w-75-xxl w-75-xl w-100-lg d-flex justify-content-around flex-wrap"
+        >
+          <form class="form-inline">
+            <div class="form-group">
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  name="dp"
+                  [(ngModel)]="fechaInicio"
+                  ngbDatepicker
+                  #d="ngbDatepicker"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-secondary calendar"
+                    (click)="d.toggle()"
+                    type="button"
+                  ></button>
+                </div>
+              </div>
+            </div>
+          </form>
+          <form class="form-inline">
+            <div class="form-group">
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  placeholder="yyyy-mm-dd"
+                  name="dp"
+                  [(ngModel)]="fechaFin"
+                  ngbDatepicker
+                  #d2="ngbDatepicker"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-secondary calendar"
+                    (click)="d2.toggle()"
+                    type="button"
+                  ></button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="cell-3">
+        <button
+          class="button info shadowed btn-block"
+          (click)="buscarMovimientosPorFechas()"
+        >
+          Buscar
+        </button>
+      </div>
+    </div>
+    <!-- Tabla -->
+    <div class="row">
+      <div class="cell-sm">
+        <table class="table row-hover row-border">
+          <thead>
+            <tr>
+              <th class="w-25">Usuario</th>
+              <th>Monto</th>
+              <th>T. Pago</th>
+              <th>F. Movimiento</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let mov of movimientos">
+              <td>{{ mov.usuario.username + " " + mov.usuario.cedula }}</td>
+              <td>{{ mov.monto }}</td>
+              <td>{{ mov.tipoPago.tipoPago }}</td>
+              <td>{{ mov.fechaMovimiento | date: "dd/MM/yyyy h:mm:ss a" }}</td>
+              <td>{{ mov.pedido.estado.nomEstado }}</td>
+              <td>
+                <div class="row row-width alinear">
+                  <div class="cell-sm-4">
+                    <button
+                      class="button shadowed yellow"
+                      (click)="abrirDetalle(mov.pedido, modalDetalle)"
+                    >
+                      <span class="">Detalles <i class="far fa-eye"></i></span>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Spinner -->
+    <div class="row">
+      <div class="cell">
+        <div>
+          <app-spinner></app-spinner>
+        </div>
+      </div>
+    </div>
+    <!-- paginador -->
+    <div class="row">
+      <div class="cell-12 d-flex flex-justify-end">
+        <!-- componente paginador -->
+        <app-paginator
+          *ngIf="paginador"
+          [paginador]="paginador"
+          [path]="path"
+        ></app-paginator>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal para ver otros detalles del arqueo -->
+<ng-template #modalDetalle let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Detalles</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p class="">
+      <strong>Cliente: </strong
+      >{{ pedido.cliente.nombres + " " + pedido.cliente.apellidos }}
+    </p>
+    <p class="mt-1"><strong>CI: </strong>{{ pedido.cliente.cedula }}</p>
+    <p class="mt-1"><strong>Mesa: </strong>{{ pedido.mesa.nombre }}</p>
+    <table class="table row-hover row-border">
+      <thead>
+        <tr>
+          <th class="w-25">Producto</th>
+          <th class="w100">Cantidad</th>
+          <th class="w100">V.Unit</th>
+          <th class="w100">Total</th>
+          <th class="w-50">Descripción</th>
+
+          <th>Combo InfoExtra</th>
+          <th>Combo SaborBebida</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let prod of pedido.items">
+          <td>{{ prod.producto.nombre }}</td>
+          <td>{{ prod.cantidad }}</td>
+          <td>${{ prod.producto.precio }}</td>
+          <td>${{ prod.cantidad * prod.producto.precio }}</td>
+          <td>
+            {{ prod.producto.descripcion }}
+          </td>
+        </tr>
+        <tr *ngFor="let comb of pedido.combos">
+          <td>{{ comb.combo.nombre }}</td>
+          <td>{{ comb.cantidad }}</td>
+          <td>${{ comb.combo.precio }}</td>
+          <td>${{ comb.cantidad * comb.combo.precio }}</td>
+          <td>
+            {{ comb.combo.descripcion }}
+          </td>
+          <td>{{ comb.infoExtra }}</td>
+          <td>{{ comb.combo.saborBebida }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer d-flex justify-content-around">
+    <button
+      type="button"
+      class="button shadowed alert mb-0 rounded-0"
+      (click)="cerrarModal()"
+    >
+      Aceptar
+    </button>
+  </div>
+</ng-template>

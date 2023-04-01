@@ -1,0 +1,163 @@
+<div class="card">
+  <div class="card-body">
+    <div class="grid">
+      <!-- Aqui van los errores desde el back -->
+      <!-- <div class="row">
+                <div class="cell-xl-12 cell-sm-12 cell-lg-12 ">
+                    errores
+                </div>
+            </div> -->
+      <div class="row">
+        <div class="cell-xl-8 cell-sm-12 cell-lg-12 mt-4">
+          <form autocomplete="off">
+            <div class="mb-4">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <label  class="input-group-text"
+                          for="inputGroupSelect01"
+                          style="border-right-color: transparent">
+                    Tipo Especial
+                  </label>
+                </div>
+                <select [compareWith]="compararCategoria"
+                        class="custom-select"
+                        id="inputGroupSelect01"
+                        name="categorias"
+                        #tipo="ngModel" 
+                        required
+                        [(ngModel)]="combo.categoria">
+                  <option [ngValue]="undefined">Choose...</option>
+                  <option value="1"
+                          [ngValue]="cate"
+                          *ngFor="let cate of listaCategorias">
+                    {{ cate.nombre }}
+                  </option>
+                </select>
+              </div>
+              <div  *ngIf="tipo.invalid && (tipo.dirty || tipo.touched)"
+                    class="alert p-0 mb-0 text-danger">
+                <div *ngIf="tipo.errors?.required">
+                  Por favor, el tipo es requerido
+                </div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <input  type="text"
+                      data-role="input"
+                      data-prepend="Nombre"
+                      name="combo_nombre"
+                      #nombre="ngModel" 
+                      required
+                      minlength="3"
+                      [(ngModel)]="combo.nombre"/>
+                <div  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)"
+                      class="alert p-0 mb-0 text-danger">
+                  <div *ngIf="nombre.errors?.required">
+                    Por favor, campo nombre es requerido
+                  </div>
+                  <div *ngIf="nombre.errors?.minlength">
+                    Por favor, ingrese al menos 3 caracteres
+                  </div>
+                </div>
+            </div>
+            <div class="mb-4">
+              <input  type="number"
+                      data-role="input"
+                      data-prepend="Precio"
+                      name="combo_precio"
+                      #precio="ngModel" 
+                      required
+                      pattern="^([0-9])$"
+                      [(ngModel)]="combo.precio"/>
+              <div  *ngIf="precio.invalid && (precio.dirty || precio.touched)"
+                    class="alert p-0 mb-0 text-danger">
+                <div *ngIf="precio.errors?.required">
+                  Por favor, ingrese un precio válido
+                </div>
+                <div *ngIf="!precio.errors?.required && errorPrecio(precio)">
+                  Por favor, ingrese un valor mayor 0
+                </div>
+              </div>
+            </div>
+            <textarea data-role="textarea"
+                      placeholder="Descripción"
+                      class="mb-2"
+                      name="descrip_combo"
+                      [(ngModel)]="combo.descripcion">
+            </textarea>
+            <div>
+              <input  data-role="input"
+                      data-prepend="Agregar Productos"
+                      type="text"
+                      class="form-control mb-2"
+                      placeholder="Ingrese el nombre del producto"
+                      [ngbTypeahead]="search"
+                      [inputFormatter]="seleccionarProducto"
+                      [resultFormatter]="formatter"/>
+            </div>
+          </form>
+        </div>
+
+        <div class="cell-xl-4 cell-sm-12 cell-lg-12">
+          <app-preview-img  (imagenSave)="(imagenProducto)"
+                            (change)="onChange($event)"
+                            #img_url>
+          </app-preview-img>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell-sm-12 cell-md-12 cell-xl-8 mb-5">
+          <table class="table row-hover row-border">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Categoria</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of combo.itemsCombo">
+                <td>
+                  <img  src="{{ api }}product/img/{{ item.producto.imagen }}"
+                        alt=""
+                        style="width: 40px; height: 40px"/>
+                </td>
+                <td>{{ item.producto.nombre }}</td>
+                <td>
+                  <input  id="{{ item.id }}"
+                          type="number"
+                          value="{{ item.cantidad }}"
+                          class="form-control col-sm-4"
+                          (change)="actualizarCantidad$(item.producto.id, $event)"/>
+                </td>
+                <td>{{ item.producto.categoria.nombre }}</td>
+                <td>
+                  <div class="w-100 d-flex justify-content-around">
+                    <button class="button alert"
+                            (click)="eliminarProductoArray(item.producto.id)">
+                      <i class="far fa-trash-alt"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div  class="cell-sm-12 cell-md-12 cell-xl-4 mb-5 d-flex justify-content-center align-items-center">
+          <button class="button shadowed button-usuario button-save border-radius-3 w-75"
+                  (click)="registrarCombo()"
+                  *ngIf="!combo.id">
+            Guardar Datos
+          </button>
+          <button class="button shadowed button-usuario button-save border-radius-3 w-75"
+                  (click)="actualizarCombo()"
+                  *ngIf="combo.id">
+            Actualizar Datos
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

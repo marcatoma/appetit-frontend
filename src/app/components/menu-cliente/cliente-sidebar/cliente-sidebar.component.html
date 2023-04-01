@@ -1,0 +1,49 @@
+<ul class="navview-menu">
+    <li class="item-separator"></li>
+    <li>
+        <a [routerLink]="['/cliente/home/mesa/', id_mesa]" id="pane-toggle">
+            <span class="icon d-flex flex-align-center justify-content-center"><i class="fas fa-home"></i
+      ></span>
+            <span class="caption">Inicio</span>
+        </a>
+    </li>
+    <li class="item-separator"></li>
+    <li class="item-header">Menú</li>
+    <li id="pane-toggle">
+        <a *ngFor="let categoria of categorias" [routerLink]="['/cliente/menu/', categoria.id]">
+            <span class="icon">
+        <img
+          src="{{ api + 'category/img/' + categoria.imagen }}"
+          style="width: 80%; height: 100%"
+          class="bd-cyan border-radius-4"
+        />
+      </span>
+            <span class="pl-2 caption">{{ categoria.nombre }}</span>
+        </a>
+    </li>
+    <!-- para listar los combos -->
+    <li class="item-header" *ngIf="categoriascombos.length > 0">Especiales / Combos </li>
+    <li id="pane-toggle">
+        <a *ngFor="let Catcombo of categoriascombos" id="pane-toggle" [routerLink]="['/cliente/menu/combo/', Catcombo.id]" id="pane-toggle">
+            <span class="icon">
+            <img
+              src="{{ api + 'category/img/' + Catcombo.imagen }}"
+              style="width: 80%; height: 100%"
+              class="bd-cyan border-radius-4"
+            />
+          </span>
+            <span class="pl-2 caption">{{ Catcombo.nombre }}</span>
+        </a>
+    </li>
+</ul>
+
+<!-- caundo no hay data en el array categorias -->
+<div class="item-header" *ngIf="categorias.length == 0" id="pane-toggle">
+    <div class="card">
+        <div class="card-body">
+            <div class="alert alert-primary flex-1" role="alert">
+                Menu no disponible aun, intente actualizando la página!
+            </div>
+        </div>
+    </div>
+</div>

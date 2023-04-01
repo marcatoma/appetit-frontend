@@ -1,0 +1,29 @@
+.fondo-recibo {
+  background-color: #eee;
+  border: 1px rgb(182, 182, 182) solid;
+  border-radius: 5px;
+}
+
+.ancho-mesa {
+  width: 28%;
+}
+
+.ancho-mesa-input {
+  width: 68%;
+}
+
+.mt-75 {
+  margin-top: 75px;
+}
+
+/* boton */
+
+.bg-black {
+  background-color: black;
+  color: white;
+}
+
+.bg-y {
+  background-color: rgb(253, 161, 57);
+  color: white;
+}

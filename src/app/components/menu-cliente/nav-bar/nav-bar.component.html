@@ -1,0 +1,177 @@
+<nav class="navbar navbar-expand-lg navbar-dark nav-color wrapper">
+  <div class="w-100 d-flex flex-justify-between">
+    <!-- boton para desplegar el menu -->
+    <div class=" ">
+      <button id="pane-toggle" class="button color-bg square d-none-md">
+        <i class="fas fa-bars fa-2x"></i>
+      </button>
+      <button
+        class="text-leader button link"
+        style="font-size: 25px"
+        [routerLink]="['/cliente']"
+      >
+        A`PETIT
+      </button>
+    </div>
+    <!-- botones de notificaciones y carrito -->
+    <div class=" ">
+      <button
+        class="button link"
+        (click)="modalNotificacion(modalPedidoNotificacion)"
+      >
+        <i class="far fa-bell fa-2x"></i>
+        <span class="badge mt-2 mr-3">4</span>
+      </button>
+      <div
+        class="button link"
+        (click)="modalPedido(modalListaPedido, modalRegistro)"
+      >
+        <span class="mif-cart mif-3x"></span>
+        <span class="badge mt-2 mr-2 badge-car">{{
+          pedido.items.length + pedido.combos.length
+        }}</span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- modal para mostrar los pedidos a realizar -->
+<ng-template #modalListaPedido let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Mi Pedido</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div
+      class="alert alert-primary"
+      role="alert"
+      *ngIf="pedido.items.length === 0 && pedido.combos.length === 0"
+    >
+      <b>¡No tienes productos para realizar el pedido!</b>
+    </div>
+    <div class="list-group" *ngFor="let item of pedido.items">
+      <a class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ item.producto.nombre }}</h5>
+          <span class="text-muted pr-2"
+            ><i class="fas fa-dollar-sign"></i
+            >{{ calcularImporte(item.cantidad, item.producto.precio) }}</span
+          >
+        </div>
+        <div class="d-flex justify-content-between align-content-center">
+          <p class="mb-1"><b>Cant: </b>{{ item.cantidad }}</p>
+          <button
+            type="button"
+            class="btn btn-danger text-center"
+            (click)="eliminarProducto(item.producto.id)"
+          >
+            <i class="far fa-trash-alt"></i>
+          </button>
+        </div>
+      </a>
+    </div>
+    <!--lista de combos-->
+    <div class="list-group" *ngFor="let item of pedido.combos">
+      <a class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ item.combo.nombre }}</h5>
+          <span class="text-muted pr-2"
+            ><i class="fas fa-dollar-sign"></i
+            >{{ calcularImporte(item.cantidad, item.combo.precio) }}</span
+          >
+        </div>
+        <div class="d-flex justify-content-between align-content-center">
+          <p class="mb-1"><b>Cant: </b>{{ item.cantidad }}</p>
+          <button
+            type="button"
+            class="btn btn-danger text-center"
+            (click)="eliminarCombo(item.combo.id)"
+          >
+            <i class="far fa-trash-alt"></i>
+          </button>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <h3 class="text-muted text-left">Total: {{ calcularTotal() }}</h3>
+    <div class="d-flex justify-content-around align-content-center w-100 mb-0">
+      <button
+        type="button"
+        class="button shadowed text-danger w-33"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Cancelar
+      </button>
+      <button
+        type="button"
+        class="button shadowed w-33 btn-finalizar-pedido"
+        (click)="postEnviarPedido()"
+      >
+        Finalizar
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- modal para mostrar las notificaciones -->
+<ng-template #modalPedidoNotificacion let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Mensajes</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-primary" role="alert">
+      <b>¡No tienes ningun mensaje!</b>
+    </div>
+    <div class="remark success">Su pedido esta listo</div>
+  </div>
+  <div class="modal-footer">
+    <div class="d-flex justify-content-around align-content-center w-100 mb-0">
+      <button
+        type="button"
+        class="button shadowed w-100 btn-finalizar-pedido"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Aceptar
+      </button>
+    </div>
+  </div>
+</ng-template>
+<!-- modalregsitro cliente -->
+<ng-template #modalRegistro let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Regsitrarme</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body p-0 fondo">
+    <app-formulario-cliente
+      [ocultarBotones]="false"
+      [cerrarModalRef]="modalRef"
+      (reclienteRetorno)="AsignarCliente($event)"
+      (registrocliente)="guardarEnviarDatos($event)"
+    ></app-formulario-cliente>
+  </div>
+</ng-template>

@@ -1,0 +1,57 @@
+<div class="card">
+    <div class="card-body">
+        <div *ngIf="categorias.length > 0">
+            <div>
+                <h5>Platos</h5>
+            </div>
+            <hr>
+            <!-- carousel de imagenes -->
+            <app-carousel [productosEspeciales] ="productosEspeciales" [tipo] = "'producto'" *ngIf="productosEspeciales.length > 0"></app-carousel>
+            <div class="flex-container wrap">
+                <div class="alert alert-primary" role="alert" *ngIf="categorias.length == 0 && categoriasCombos.length === 0">
+                    Menu no disponible aun, intente actualizando la página!
+                </div>
+                <div *ngFor="let categoria of categorias">
+                    <div class="card-categoria" [routerLink]="['/cliente/menu/', categoria.id]">
+                        <div class="imgBox">
+                            <img src="{{ api + 'category/img/' + categoria.imagen }}" [alt]="categoria.nombre" />
+                        </div>
+                        <div class="details d-flex flex-align-center justify-content-center">
+                            <div class="textContent">
+                                <h3>
+                                    <b>{{ categoria.nombre }}</b>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </div>
+        <div *ngIf="categoriasCombos.length > 0">
+            <div>
+                <h5>Especiales / combos</h5>
+            </div>
+            <hr>
+            <!-- carousel de imagenes -->
+            <app-carousel [combosEspeciales] ="combosEspeciales" [tipo] = "'combo'" *ngIf="combosEspeciales.length > 0"></app-carousel>
+            <div class="flex-container wrap">
+                <div *ngFor="let catCombo of categoriasCombos">
+                    <div class="card-categoria" [routerLink]="['/cliente/menu/combo/', catCombo.id]">
+                        <div class="imgBox">
+                            <img src="{{ api + 'category/img/' + catCombo.imagen }}" [alt]="catCombo.nombre" />
+                        </div>
+                        <div class="details d-flex flex-align-center justify-content-center">
+                            <div class="textContent">
+                                <h3>
+                                    <b>{{ catCombo.nombre }}</b>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

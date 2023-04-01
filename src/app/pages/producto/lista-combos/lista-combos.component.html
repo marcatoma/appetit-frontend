@@ -1,0 +1,187 @@
+<div class="card">
+  <div class="card-body">
+    <!-- Barra para añadir -->
+    <div class="row">
+      <div class="cell-3 text-left">
+        <div class="d-flex flex-justify-start">
+          <h5>Todos los combos u especiales</h5>
+        </div>
+      </div>
+      <div class="cell-3 offset-6 text-right">
+        <div class="d-flex flex-justify-end">
+          <a  class="button primary shadowed btn-block"
+              routerLink="/dashboard/crearcombo/:id">
+            Añadir
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- Acciones y input para filtrar -->
+    <div class="row">
+      <div class="cell-3 offset-6">
+        <div class="d-flex flex-justify-between">
+          <input type="text" data-role="input" data-prepend="Buscar: " />
+        </div>
+      </div>
+      <div class="cell-3 offset-0">
+        <div class="d-flex flex-justify-between">
+          <button class="button info shadowed btn-block">Acciones</button>
+        </div>
+      </div>
+    </div>
+    <!-- tabla -->
+    <div>
+      <table class="table row-hover row-border">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Contiene</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let com of itemsCombos">
+            <td>
+              <img
+                src="{{ api }}product/img/{{ com.imagen }}"
+                alt=""
+                width="50px"
+                height="50px"
+              />
+            </td>
+            <td>{{ com.nombre | titlecase }}</td>
+            <td>{{ com.itemsCombo.length }} Productos</td>
+            <td>{{ com.categoria.nombre | titlecase }}</td>
+            <td> ${{ com.precio }} </td>
+            <td>
+              <div class="d-flex justify-content-around align-items-center">
+                <div class="cell-xl-3 cell-sm-1 cell-md-1">
+                  <button class="button light rounded"
+                          (click)="abrirModalAcciones(com, modalAcciones)"
+                          placement="bottom" 
+                          ngbTooltip="Más opciones">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
+                <div class="cell-xl-3 cell-sm-1 cell-md-1 d-flex align-content-center">
+                  <label class="checkbox transition-on">
+                    <input  type="checkbox"
+                            data-role="checkbox"
+                            data-caption="Style 1"
+                            data-role-checkbox="true"
+                            name="combo_estado"
+                            [(ngModel)]="com.estado"
+                            (change)="cambiarestado(com)"/>
+                    <span class="check"></span>
+                    <span class="caption">
+                      Esta en el menú
+                    </span>
+                  </label>
+                </div>
+                <div class="cell-xl-3 cell-sm-1 cell-md-1 d-flex align-content-center">
+                  <label class="checkbox transition-on">
+                    <input  type="checkbox"
+                            data-role="checkbox"
+                            data-caption="Style 1"
+                            data-role-checkbox="true"
+                            name="combo_especial"
+                            [(ngModel)]="com.especial"
+                            (change)="cambiarEstadoEspecial(com)"/>
+                    <span class="check"></span>
+                    <span class="caption">Especial</span>
+                  </label>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<ng-template #modalAcciones let-modal>
+  <div class="modal-header">
+   <h3>Acciones para los combos</h3>
+  </div>
+  <div class="modal-body flex-style">
+    <div class="cont-description">
+      <div class="d-flex justify-content-around align-items-center">
+        <div class="cell-xl-3 cell-sm-1">
+          <button class="button info rounded shadowed" 
+                  (click)="cerrarModal()"
+                  [routerLink]="['/dashboard/crearcombo/', combo.id]">
+            <i class="fas fa-edit mr-1"></i>
+            Editar
+          </button>
+        </div>
+        <div class="cell-xl-3 cell-sm-1">
+          <button class="button rounded shadowed"
+                  (click)="productosCombo(combo, modalItemsCombo)">
+            <i class="fas fa-eye mr-1"></i>
+            Ver Detalles
+          </button>
+        </div>
+        <div class="cell-xl-3 cell-sm-1">
+          <button class="button light rounded">
+            <i class="fas fa-trash-alt mr-1"></i>
+            Borrar
+          </button>
+        </div>
+        </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="button alert shadowed border-radius-1 mb-0"
+            (click)="modal.dismiss('Cross click')">
+      Cerrar
+    </button>
+  </div>
+</ng-template>
+<!-- modal apra ver los items del Combo -->
+<ng-template #modalItemsCombo let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Nombre: {{ combo.nombre }}</h4>
+    <button type="button"
+            class="close"
+            aria-label="Close"
+            (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body flex-style">
+    <div class="cont-description">
+      <table class="table row-hover row-border">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Cant.</th>
+            <th>Producto</th>
+            <th>Categoria</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of combo.itemsCombo">
+            <td>
+              <img  src="{{ api }}/product/img/{{ item.producto.imagen }}"
+                    alt=""
+                    width="50px"
+                    height="50px"/>
+            </td>
+            <td>{{ item.cantidad }}</td>
+            <td>{{ item.producto.nombre }}</td>
+            <td>{{ item.producto.categoria.nombre }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="button alert shadowed border-radius-1 mb-0"
+            (click)="modal.dismiss('Cross click')">
+      Cerrar
+    </button>
+  </div>
+</ng-template>

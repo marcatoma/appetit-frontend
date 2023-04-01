@@ -1,0 +1,123 @@
+<div class="card">
+    <div class="card-body">
+        <!-- Barra para añadir -->
+        <div class="row">
+            <div class="cell-3 text-left">
+                <div class="d-flex flex-justify-start">
+                    <h5>Todos los productos</h5>
+                </div>
+            </div>
+            <div class="cell-3 offset-6 text-right">
+                <div class="d-flex flex-justify-end">
+                  <a class="button primary shadowed btn-block" routerLink="/dashboard/crearpro/:id">Añadir</a>
+                </div>
+            </div>
+        </div>
+    <!-- Acciones y input para filtrar -->
+    <div class="row">
+      <div class="cell-3 offset-6">
+        <div class="d-flex flex-justify-between">
+          <input type="text" data-role="input" data-prepend="Buscar: " />
+        </div>
+      </div>
+      <div class="cell-3 offset-0">
+        <div class="d-flex flex-justify-between">
+          <button class="button info shadowed btn-block">Acciones</button>
+        </div>
+      </div>
+    </div>
+    <!-- Tabla -->
+    <div class="row">
+      <div class="cell-sm">
+        <table class="table striped">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Producto</th>
+              <th>Categoria</th>
+              <th>Precio</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="listaProductos.length > 0">
+            <tr *ngFor="let prod of listaProductos">
+              <td>
+                <img  class="img-categoria"
+                      src="assets/icons/addImg.png"
+                      alt=""
+                      *ngIf="prod.imagen == '' || prod.imagen == undefined"/>
+                <img  class="img-categoria"
+                      src="{{ api }}product/img/{{ prod.imagen }}"
+                      alt="not found"
+                      *ngIf="prod.imagen != undefined"/>
+              </td>
+              <td>{{ prod.nombre }}</td>
+              <td>{{ prod.categoria.nombre }}</td>
+              <td>{{ prod.precio }}</td>
+              <td>
+                <div class="row row-width alinear">
+                  <div class="cell-sm-3">
+                    <button class="button info rounded shadowed"
+                            [routerLink]="['/dashboard/crearpro/', prod.id]">
+                      <span><i class="fas fa-pen"></i></span>
+                    </button>
+                  </div>
+                  <div class="cell-sm-3">
+                    <button class="button light rounded"
+                            (click)="eliminarProducto(prod.id)">
+                      <span><i class="fas fa-trash-alt"></i></span>
+                    </button>
+                  </div>
+                  <div class="cell-sm-3 d-flex align-content-center">
+                    <label class="checkbox transition-on">
+                      <input  type="checkbox"
+                              data-role="checkbox"
+                              data-caption="Style 1"
+                              data-role-checkbox="true"
+                              name="prod_estado"
+                              [(ngModel)]="prod.estado"
+                              (change)="cambiarEstadoProducto(prod)"/>
+                        <span class="check"></span>
+                        <span class="caption">Esta en el menú</span>
+                    </label>
+                  </div>
+                  <div class="cell-sm-3 d-flex align-content-center">
+                    <label class="checkbox transition-on">
+                      <input  type="checkbox"
+                              data-role="checkbox"
+                              data-caption="Style 1"
+                              data-role-checkbox="true"
+                              name="prod_especial"
+                              [(ngModel)]="prod.especial"
+                              (change)="cambiarEstadoEspecialProducto(prod)"/>
+                        <span class="check"></span>
+                        <span class="caption">Especial</span>
+                    </label>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- Spinner -->
+    <div class="row">
+      <div class="cell">
+        <div *ngIf="listaProductos.length === 0">
+          <app-spinner></app-spinner>
+        </div>
+      </div>
+    </div>
+    <!-- paginador -->
+    <div class="row">
+      <div class="cell-12 d-flex flex-justify-end">
+        <!-- componente paginador -->
+        <app-paginator  *ngIf="paginador"
+                        [paginador]="paginador"
+                        [path]="path">
+        </app-paginator>
+      </div>
+    </div>
+  </div>
+</div>

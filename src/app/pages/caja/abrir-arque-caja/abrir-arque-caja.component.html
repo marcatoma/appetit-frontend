@@ -1,0 +1,116 @@
+<div class="card mt-0 fondo">
+  <div class="card-body p-2">
+    <!-- formulario -->
+    <!--errores desde el backend-->
+    <div class="container" *ngIf="errores.length != 0">
+      <div class="alert alert-danger" role="alert" *ngFor="let err of errores">
+        {{ err }}
+      </div>
+    </div>
+    <form>
+      <div class="card w-75-md w-50-xxl w-50-xl w-100-sm">
+        <div class="card-body">
+          <div class="row">
+            <div class="cell-md-12">
+              <!-- select e input usuario -->
+              <div>
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <label
+                      class="input-group-text"
+                      for="select_usuario"
+                      style="border-right-color: transparent"
+                    >
+                      Asignar Usuario:
+                    </label>
+                  </div>
+                  <select
+                    [compareWith]="compararusuario"
+                    class="custom-select"
+                    id="select_usuario"
+                    name="usuario_arqueo"
+                    [(ngModel)]="arqueo.usuario"
+                  >
+                    <option [ngValue]="undefined">Seleccionar...</option>
+                    <option
+                      value="1"
+                      [ngValue]="user"
+                      *ngFor="let user of usuarios"
+                    >
+                      {{ user.username + " - " + user.cedula }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- select e input Caja -->
+              <div>
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <label
+                      class="input-group-text"
+                      for="select_caja"
+                      style="border-right-color: transparent"
+                    >
+                      Asignar Caja:
+                    </label>
+                  </div>
+                  <select
+                    [compareWith]="compararCaja"
+                    class="custom-select"
+                    id="select_caja"
+                    name="caja_arqueo"
+                    [(ngModel)]="arqueo.caja"
+                  >
+                    <option [ngValue]="undefined">Seleccionar...</option>
+                    <option value="1" [ngValue]="caj" *ngFor="let caj of cajas">
+                      {{ caj.nombreCaja }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <!-- monto inicial -->
+              <input
+                type="number"
+                class="mb-2"
+                data-role="input"
+                data-prepend="Monto ($): "
+                name="valor_icial"
+                [(ngModel)]="arqueo.montoInicial"
+              />
+              <!-- descripcion -->
+              <textarea
+                data-role="textarea"
+                placeholder="Descripción"
+                data-prepend="<i class='fas fa-book-open'></i>"
+                name="dealle_apertura"
+                [(ngModel)]="arqueo.descripcion"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <!-- botones -->
+    <div class="row">
+      <div class="cell-12 d-flex justify-content-center">
+        <div
+          class="w-75-md w-50-xxl w-50-xl w-100-sm d-flex justify-content-around"
+        >
+          <button
+            class="button outline alert mb-0 w-25"
+            routerLink="/dashboard/arqueos/page/0"
+          >
+            Cancelar
+          </button>
+          <button
+            class="button shadowed bg-black w-25"
+            (click)="registrarArqueo()"
+          >
+            Guardar
+          </button>
+          <!-- <button class="button shadowed bg-black w-25">Actualizar</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

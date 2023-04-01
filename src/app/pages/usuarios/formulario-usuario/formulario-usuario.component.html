@@ -1,0 +1,246 @@
+<div class="container-fluid mb-5">
+  <div class="grid">
+      <div class="row">
+          <div class="cell-sm">
+            <div class="card mt-0 fondo">
+              <div class="card-body p-2">
+                <!-- formulario -->
+                <form autocomplete="off" #miForm="ngForm">
+                  <div class="card mb-2">
+                    <div class="card-body">
+                      <h5 class="mb-2">Datos generales</h5>
+                      <div  *ngIf="erroresBackend.length != 0" >
+                        <ul class="ml-0">
+                          <li class="invalid_feedback"
+                              *ngFor="let err of erroresBackend">
+                            {{ err }}
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="row">
+                        <div class="cell-md-6 pb-0">
+                          <!-- inputs -->
+                          <div class="mb-4">
+                            <input  type="text"
+                                  data-role="input"
+                                  data-prepend="Nombre"
+                                  name="nombre"
+                                  #nombre="ngModel" 
+                                  required
+                                  minlength="3"
+                                  [(ngModel)]="usuario.nombre"/>
+                            <div  *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)"
+                                  class="alert p-0 mb-0 text-danger">
+                              <div *ngIf="nombre.errors?.required">
+                                Por favor, ingrese un nombre válido
+                              </div>
+                              <div *ngIf="nombre.errors?.minlength">
+                                Por favor, ingrese almenos 3 caracteres
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-4">
+                            <input  type="number"
+                                    data-role="input"
+                                    data-prepend="Teléfono"
+                                    name="telefono"
+                                    #telefono="ngModel" 
+                                    required
+                                    pattern="^[1-9][0-9]{8,9}$"
+                                    [(ngModel)]="usuario.telefono"/>
+                            <div  *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)"
+                                  class="alert p-0 mb-0 text-danger">
+                              <div *ngIf="telefono.errors?.required">
+                                Por favor, ingrese un teléfono válido
+                              </div>
+                              <div div *ngIf="telefono.errors?.pattern">
+                                    Por favor, ingrese 10 caracteres
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="cell-md-6 pb-0">
+                          <!-- inputs -->
+                          <div class="mb-4">
+                            <input  type="number"
+                                    data-role="input"
+                                    data-prepend="Identificación"
+                                    name="ced"
+                                    #cedula="ngModel" 
+                                    required
+                                    pattern="^([0-9])[0-9][0-9]{7,7}$"
+                                    [(ngModel)]="usuario.cedula"/>
+                            <div  *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)"
+                                  class="alert p-0 mb-0 text-danger">
+                              <div *ngIf="cedula.errors?.required">
+                                Por favor, ingrese una cédula válida
+                              </div>
+                              <div  *ngIf="cedula.errors?.pattern">
+                                    Por favor, ingrese almenos 10 caracteres
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-4">
+                            <div class="input-group mb-0">
+                                <div class="input-group-prepend">
+                                  <label  class="input-group-text"
+                                          for="genero"
+                                          style="border-right-color: transparent">
+                                          Género
+                                  </label>
+                                </div>
+                                <select [compareWith]="compararGenero"
+                                        class="custom-select"
+                                        id="genero"
+                                        name="genero"
+                                        #genero="ngModel" 
+                                        required
+                                        [(ngModel)]="usuario.sexo">
+                                <option [ngValue]="undefined">Seleccionar...</option>
+                                <option value="1" 
+                                        [ngValue]="gen" 
+                                        *ngFor="let gen of generos">
+                                  {{ gen.tipo }}
+                                </option>
+                              </select>
+                            </div>
+                            <div  *ngIf="genero.invalid && (genero.dirty || genero.touched)"
+                                  class="alert p-0 mb-0 text-danger">
+                              <div *ngIf="genero.errors?.required">
+                                Por favor, el género es requerido
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <h5 class="mb-2">Datos Usuario</h5>
+                      <div class="row">
+                        <div class="cell-md-6 pb-0">
+                          <!-- inputs -->
+                          <div class="mb-4">
+                            <input  type="text"
+                                  data-role="input"
+                                  data-prepend="Usuario"
+                                  name="username"
+                                  #username="ngModel" 
+                                  required
+                                  minlength="3"
+                                  [(ngModel)]="usuario.username"/>
+                            <div  *ngIf="username.invalid && (username.dirty || username.touched)"
+                                  class="alert p-0 mb-0 text-danger">
+                              <div *ngIf="username.errors?.required">
+                                Por favor, campo requerido
+                              </div>
+                              <div *ngIf="username.errors?.minlength">
+                                Por favor, ingrese al menos 3 caracteres
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-4">
+                            <input  type="email"
+                                    data-role="input"
+                                    data-prepend="Email"
+                                    name="email"
+                                    #email="ngModel" 
+                                    required
+                                    [(ngModel)]="usuario.email"/>
+                            <div  *ngIf="email.invalid && (email.dirty || email.touched)"
+                                  class="alert p-0 mb-0 text-danger">
+                              <div *ngIf="email.errors?.required">
+                                Por favor, campo requerido
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-4">
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <label  class="input-group-text"
+                                        for="inputGroupSelect01"
+                                        style="border-right-color: transparent">
+                                  Role
+                                </label>
+                              </div>
+                              <select [compareWith]="compararRole"
+                                      class="custom-select"
+                                      id="roles"
+                                      name="roles"
+                                      #rol="ngModel" 
+                                      required
+                                      [(ngModel)]="usuario.roles[0]">
+                                <option [ngValue]="undefined">Seleccionar...</option>
+                                <option value="1" 
+                                        [ngValue]="rol" 
+                                        *ngFor="let rol of roles">
+                                  {{ rol.nombre | titlecase }}
+                                </option>
+                              </select>
+                            </div>
+                            <div  *ngIf="rol.invalid && (rol.dirty || rol.touched)"
+                                  class="alert p-0 mb-0 text-danger">
+                              <div *ngIf="rol.errors?.required">
+                                Por favor, el rol es requerido
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="cell-md-6 pb-0">
+                          <!-- inputs -->
+                          <div class="mb-4">
+                            <input  type="password"
+                                    data-role="input"
+                                    data-prepend="Contraseña"
+                                    name="password"
+                                    #pass="ngModel" 
+                                    required
+                                    minlength="3"
+                                    [(ngModel)]="usuario.password"/>
+                            <div  *ngIf="pass.invalid && (pass.dirty || pass.touched)"
+                                  class="alert p-0 mb-0 text-danger">
+                              <div *ngIf="pass.errors?.required">
+                                Por favor, campo requerido
+                              </div>
+                              <div *ngIf="pass.errors?.minlength">
+                                Por favor, ingrese al menos 3 caracteres
+                              </div>
+                            </div>
+                          </div>
+                          <div class="mb-4">
+                            <input  type="password"
+                                    data-role="input"
+                                    data-prepend="Confirmar "
+                                    name="confirmpass"
+                                    [(ngModel)]="confirmarPassword"
+                                    (keyup)="compararContrasenas()"/>
+                            <div  *ngIf="coinsidenPassword == false"
+                                  class="alert p-0 mb-0 text-danger"
+                                  role="alert">
+                                Las contraseñas no coinciden
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-100 d-flex justify-content-between mt-3 mb-2">
+                    <button class="button shadowed button-usuario ml-2"
+                            (click)="regresar()">
+                      Cancelar
+                    </button>
+                    <button class="button shadowed button-usuario button-save mr-2"
+                            (click)="registrarUsuario()"
+                            *ngIf="!usuario.id">
+                      Guardar
+                    </button>
+                    <button class="button primary rounded shadowed w-25"
+                            (click)="actualizarUsuario()"
+                            *ngIf="usuario.id">
+                      Actualizar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>

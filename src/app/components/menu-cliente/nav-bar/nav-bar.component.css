@@ -1,0 +1,100 @@
+header {
+    background: rgba(0, 0, 0, 0.9);
+    width: 100%;
+    position: fixed;
+    z-index: 10;
+}
+
+.wrapper {
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+nav div {
+    list-style: none;
+    overflow: hidden;
+    /* Limpiamos errores de float */
+}
+
+.navbar {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.navbar-nav {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.nav-color {
+    background-color: black;
+}
+
+.button.link {
+    background-color: transparent;
+    color: white
+}
+
+.button.link:hover {
+    color: white;
+    text-decoration: none
+}
+
+.button.link.focus,
+.button.link:focus {
+    -webkit-box-shadow: none;
+    box-shadow: non e
+}
+
+button:focus {
+    outline: 1px dotted;
+    outline: none;
+}
+
+.color-bg {
+    background-color: transparent;
+    color: white;
+}
+
+@media screen and (max-width: 765px) {
+    .navbar {
+        background: rgba(0, 0, 0, 0.9);
+        width: 100%;
+        position: fixed;
+        z-index: 10;
+    }
+}
+
+
+/* botones pedido */
+
+.btn-finalizar-pedido {
+    color: white;
+    background-color: black;
+}
+
+.badge {
+    right: 0;
+}
+
+.badge-car {
+    background-color: #00AFF0 !important;
+    color: white;
+}

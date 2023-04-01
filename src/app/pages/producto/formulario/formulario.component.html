@@ -1,0 +1,123 @@
+<div class="card">
+  <div class="card-body">
+    <form>
+      <div class="row">
+        <div class="cell-md-6">
+          <div class="row">
+            <div class="cell-12 mt-4">
+              <input  type="text"
+                      data-role="input"
+                      data-prepend="Nombre producto "
+                      name="prodNombre"
+                      autocomplete="off"
+                      [(ngModel)]="producto.nombre"
+                      #prodNombre="ngModel" 
+                      required
+                      minlength="3"/>
+              <div  *ngIf="prodNombre.invalid && (prodNombre.dirty || prodNombre.touched)"
+                    class="alert p-0 mb-0 text-danger">
+                <div *ngIf="prodNombre.errors?.required">
+                  Por favor, campo nombre es requerido
+                </div>
+                <div *ngIf="prodNombre.errors?.minlength">
+                  Por favor, ingrese al menos 3 caracteres
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="cell-12">
+              <input  type="number"
+                      data-role="input"
+                      data-prepend="Precio producto: "
+                      name="prodPrecio"
+                      autocomplete="off"
+                      [(ngModel)]="producto.precio"
+                      #prodPrecio="ngModel" 
+                      required
+                      pattern="^([0-9])$"/>
+              <div  *ngIf="prodPrecio.invalid && (prodPrecio.dirty || prodPrecio.touched)"
+                    class="alert p-0 mb-0 text-danger">
+                <div *ngIf="prodPrecio.errors?.required">
+                  Por favor, ingrese un precio válido
+                </div>
+                <div *ngIf="!prodPrecio.errors?.required && errorPrecio(prodPrecio)">
+                  Por favor, ingrese un valor mayor 0
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="cell-12">
+              <input  type="text"
+                      data-role="input"
+                      data-prepend="Descripción producto: "
+                      name="prodDescripcion"
+                      autocomplete="off"
+                      [(ngModel)]="producto.descripcion"/>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="cell-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text">
+                    Categoria producto:
+                  </label>
+                </div>
+                <select [compareWith]="compararCategoria"
+                        class="custom-select"
+                        id="inputGroupSelect01"
+                        name="categorias"
+                        [(ngModel)]="producto.categoria"
+                        #tipo="ngModel" 
+                        required>
+                  <option [ngValue]="undefined">Choose...</option>
+                  <option value="1"
+                          [ngValue]="cate"
+                          *ngFor="let cate of listaCategorias">
+                    {{ cate.nombre | titlecase}}
+                  </option>
+                </select>
+              </div>
+              <div  *ngIf="tipo.invalid && (tipo.dirty || tipo.touched)"
+                    class="alert p-0 mb-0 text-danger">
+                <div *ngIf="tipo.errors?.required">
+                  Por favor, el tipo es requerido
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- componete review img -->
+        <div class="cell-md-5 offset-1">
+          <app-preview-img  (imagenSave)="(imagenProducto)"
+                            (change)="onChange($event)"
+                            #img_url>
+          </app-preview-img>
+        </div>
+      </div>
+      <div class="row">
+        <div class="cell-12 d-flex flex-justify-between">
+          <button type="button" 
+                  class="button shadowed button-usuario"
+                  (click)="regresar()">
+                Regresar
+          </button>
+          <button class="button shadowed button-usuario button-save border-radius-3"
+                  (click)="RegistrarProducto()"
+                  style="width: 40%;"
+                  *ngIf="!producto.id">
+            Guardar
+          </button>
+          <button class="button shadowed button-usuario button-save border-radius-3"
+                  style="width: 40%;"
+                  (click)="actualizaProducto()"
+                  *ngIf="producto.id">
+            Actualizar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

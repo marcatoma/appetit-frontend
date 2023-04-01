@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="row margin-container">
+    <div class="card">
+      <div class="card-body">
+        <h3>Mesas Disponibles</h3>
+        <div class="flex-container wrap">
+          <div
+            class="alert alert-primary"
+            role="alert"
+            *ngIf="mesas.length == 0"
+          >
+            Mesas no disponible aun, intente actualizando la página!
+          </div>
+          <div *ngFor="let mesa of mesas">
+            <div
+              class="card-mesa d-flex justify-content-center align-items-center"
+              [routerLink]="['/cliente/home/mesa/', mesa.id]"
+            >
+              <div>
+                <div class="d-flex justify-content-center">
+                  <h2 class="text-leader d-inline">{{ mesa.nombre }}</h2>
+                </div>
+                <div class="d-flex justify-content-center">
+                  <img src="assets/icons/mesa.png" alt="" srcset="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

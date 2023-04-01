@@ -1,0 +1,103 @@
+<div class="container-fluid" >
+    <div class="grid">
+        <div class="row w-100 d-flex justify-content-center">
+            <div class="cell-sm cell-md-10 cell-xl-6 cell-xxl-6">
+                <form autocomplete="off" [formGroup]="perfilForm">
+                    <div class="card mb-2">
+                        <div class="card-body p-3">
+                            <div class="w-100 d-flex justify-content-center border-bottom">
+                                <h5 class="mb-2">Perfil público</h5>
+                                <hr>
+                            </div>
+                            <div class="row">
+                                <div class="cell-md-12 pb-0">
+                                    <!-- nombre -->
+                                    <div    [ngClass]="{'mb-2': !tieneError('nombre')}">
+                                        <p>Nombre:</p>
+                                        <input  type="text" 
+                                                data-role="input"
+                                                placeholder="Nombre"
+                                                formControlName="nombre">
+                                        <span   class="mt-0"  
+                                                appDrErrorMsg 
+                                                [valido]="!tieneError('nombre')"
+                                                [mensaje]="nombreMsgError">
+                                        </span>        
+                                    </div>
+                                    <!-- email -->
+                                    <div [ngClass]="{'mb-2': !tieneError('email')}">
+                                        <p >Email:</p>
+                                        <input  type="email" 
+                                                data-role="input" 
+                                                placeholder="Email"
+                                                formControlName="email">
+                                        <span   class="mt-0"  
+                                                appDrErrorMsg 
+                                                [valido]="!tieneError('email')"
+                                                [mensaje]="emailMsgError">
+                                        </span>       
+                                    </div>
+                                    <!-- cedula -->
+                                    <div [ngClass]="{'mb-2': !tieneError('cedula')}">
+                                        <p >Cédula:</p>
+                                        <input  type="text" 
+                                                data-role="input" 
+                                                placeholder="Cédula"
+                                                formControlName="cedula">    
+                                        <span   class="mt-0"  
+                                                appDrErrorMsg 
+                                                [valido]="!tieneError('cedula')"
+                                                [mensaje]="cedulaMsgError">
+                                        </span>
+                                    </div>
+                                    <!-- telefono -->
+                                    <div [ngClass]="{'mb-2': !tieneError('telefono')}">
+                                        <p >Teléfono:</p>
+                                        <input  type="tel" 
+                                                data-role="input" 
+                                                placeholder="Teléfono"
+                                                formControlName="telefono">
+                                        <span   class="mt-0"  
+                                                appDrErrorMsg 
+                                                [valido]="!tieneError('telefono')"
+                                                [mensaje]="telefonoMsgError">
+                                        </span>    
+                                    </div>
+                                    <!-- genero -->
+                                    <div [ngClass]="{'mb-2': !tieneError('sexo')}">
+                                        <p >Género:</p>
+                                        <div class="input-group mb-0">
+                                            <select class="custom-select"
+                                                    id="genero"
+                                                    name="genero"
+                                                    [compareWith]="compararGenero" 
+                                                    required
+                                                    formControlName="sexo">
+                                            <option value="">Seleccionar...</option>
+                                            <option *ngFor="let genero of generos" [ngValue]="genero">{{genero.tipo}}</option>
+                                          </select>
+                                        </div>
+                                        <span   class="mt-0"  
+                                                appDrErrorMsg 
+                                                [valido]="!tieneError('sexo')">
+                                        </span>
+                                      </div>
+                                </div>
+                            </div>
+                            <div class="w-100 d-flex justify-content-between mt-3 mb-2">
+                                <button class="button shadowed button-usuario "
+                                        (click)="regresar()">
+                                  Cancelar
+                                </button>
+                                <button class="button shadowed button-usuario button-save border-radius-2 "
+                                        (click)="editAccount()">
+                                  Guardar
+                                </button>
+                            </div>
+                      </div>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+                

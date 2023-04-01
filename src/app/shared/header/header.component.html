@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-lg navbar-dark nav-color">
+    <div class=" w-100 d-flex flex-justify-between">
+        <!-- boton para desplegar el menu -->
+        <div class="w-10">
+            <button id="pane-toggle" class="button color-bg square d-none-md "><i class="fas fa-bars fa-2x"></i></button>
+        </div>
+        <div class="" *ngIf="authService.isAuthenticated()">
+            <div ngbDropdown class="d-inline-block">
+                <button class=" button info cycle" id="dropdownBasic1" ngbDropdownToggle>
+                  <i class="fas fa-1x fa-user-cog"></i>
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu dropdown-menu-right">
+                    <div ngbDropdownItem>
+                        <p>
+                            <i class="fas fa-user-alt"></i>
+                            {{authService.usuario.username | titlecase}} ({{authService.usuario.roles[0] | titlecase}})
+                        </p>
+                    </div>
+                    <hr>
+                    <button ngbDropdownItem routerLink="perfil/:id">Mi perfil</button>
+                    <button ngbDropdownItem routerLink="cuenta/:id">Cuenta</button>
+                    <hr>
+                    <button ngbDropdownItem (click)="logOut()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Cerrar sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

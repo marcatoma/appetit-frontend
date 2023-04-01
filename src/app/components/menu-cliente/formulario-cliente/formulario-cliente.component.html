@@ -1,0 +1,113 @@
+<form>
+  <div class="container" *ngIf="erroresBackend.length != 0">
+    <div
+      class="alert alert-danger"
+      role="alert"
+      *ngFor="let err of erroresBackend"
+    >
+      {{ err }}
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5>Ingrese sus datos</h5>
+      <div class="row">
+        <div class="cell-sm-6 pr-4-lg">
+          <input
+            type="text"
+            data-role="input"
+            data-prepend="Nombre: "
+            name="nombreClient"
+            class="mb-3"
+            [(ngModel)]="cliente.nombres"
+            autocomplete="off"
+          />
+          <input
+            type="text"
+            data-role="input"
+            data-prepend="Apellido: "
+            name="ape"
+            class="mb-3"
+            [(ngModel)]="cliente.apellidos"
+            autocomplete="off"
+          />
+          <input
+            type="text"
+            data-role="input"
+            data-prepend="Dirección: "
+            name="dir"
+            [(ngModel)]="cliente.direccion"
+            autocomplete="off"
+          />
+        </div>
+        <div class="cell-sm-6">
+          <input
+            type="number"
+            data-role="input"
+            data-prepend="Cédula: "
+            name="cedula"
+            autocomplete="off"
+            [(ngModel)]="cliente.cedula"
+            class="mb-3"
+          />
+          <input
+            type="email"
+            data-role="input"
+            data-prepend="email: "
+            name="email"
+            autocomplete="off"
+            [(ngModel)]="cliente.email"
+            class="mb-3"
+          />
+          <input
+            type="number"
+            data-role="input"
+            data-prepend="Celular: "
+            name="celular"
+            autocomplete="off"
+            [(ngModel)]="cliente.celular"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="w-100 d-flex justify-content-between pl-2 pr-2 mb-2"
+    *ngIf="!ocultarBotones"
+  >
+    <button
+      type="button"
+      class="button shadowed w-25-sm"
+      (click)="cerrarModal()"
+    >
+      Cancelar
+    </button>
+    <button
+      type="button"
+      class="button shadowed w-25-sm button-save"
+      (click)="registrarCliente()"
+    >
+      Registrarme
+    </button>
+  </div>
+  <!--registro por parte de los administradotres-->
+  <div
+    class="w-100 d-flex justify-content-between pl-2 pr-2 mb-2"
+    *ngIf="ocultarBotones"
+  >
+    <button
+      type="button"
+      class="button shadowed alert rounded-0 w-25"
+      (click)="cerrarModal()"
+    >
+      Cancelar
+    </button>
+    <button
+      type="button"
+      class="button shadowed w-25-sm button-save"
+      (click)="registrarCliente()"
+    >
+      Guardar
+    </button>
+  </div>
+</form>

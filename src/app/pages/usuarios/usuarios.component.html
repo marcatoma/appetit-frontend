@@ -1,0 +1,136 @@
+<div class="card">
+    <div class="card-body">
+      <!-- Barra para añadir -->
+      <div class="row">
+          <div class="cell-3 text-left">
+              <div class="d-flex flex-justify-start">
+                  <h5>Todos los usuarios</h5>
+              </div>
+          </div>
+          <div class="cell-3 offset-6 text-right">
+              <div class="d-flex flex-justify-end">
+                  <a class="button primary shadowed btn-block" routerLink="/dashboard/crearusu/:id">
+                    Añadir
+                  </a>
+              </div>
+          </div>
+      </div>
+      <!-- Acciones y input para filtrar -->
+      <div class="row">
+        <div class="cell-3 offset-6">
+          <div class="d-flex flex-justify-between">
+            <input type="text" data-role="input" data-prepend="Buscar: " />
+          </div>
+        </div>
+        <div class="cell-3 offset-0">
+          <div class="d-flex flex-justify-between">
+            <button class="button info shadowed btn-block">Acciones</button>
+          </div>
+        </div>
+      </div>
+      <!-- Tabla -->
+      <div class="row">
+      <div class="cell-sm">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Usuario</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let usu of listaUsuarios; let i = index">
+              <td>{{i+1}}</td>
+              <td>{{ usu.username | titlecase }}</td>
+              <td>{{ usu.nombre | titlecase }}</td>
+              <td>{{ usu.email }}</td>
+              <td class="pt-2">
+                <div class="row">
+                  <div class="cell-sm-4">
+                    <button class="button info rounded shadowed"
+                            [routerLink]="['/dashboard/crearusu/', usu.id]"
+                            placement="bottom" 
+                            ngbTooltip="Editar">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </div>
+                  <div class="cell-sm-4">
+                    <button class="button rounded shadowed"
+                            (click)="abrirModalDetalles(modalDetalles, usu)"
+                            placement="bottom" 
+                            ngbTooltip="Detalles">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                  <div class="cell-sm-4">
+                    <button class="button light rounded"
+                            (click)="eliminarUsuario(usu.id)">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+      <!-- Spinner -->
+      <div class="row">
+        <div class="cell">
+          <div *ngIf="">
+            <app-spinner></app-spinner>
+          </div>
+        </div>
+      </div>
+      <!-- paginador -->
+      <div class="row">
+        <div class="cell-12 d-flex flex-justify-end">
+          <!-- componente paginador -->
+          <app-paginator
+            *ngIf="paginador"
+            [paginador]="paginador"
+            [path]="path">
+          </app-paginator>
+        </div>
+      </div>
+  </div>
+</div>
+
+<!-- Modal para agregar o editar la mesas -->
+<ng-template #modalDetalles let-modal>
+  <div class="modal-header">
+      <!-- titulo del modal -->
+      <h4 class="modal-title">Detalles del usuario</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  </div>
+  <div class="modal-body">
+      <div class="d-flex flex-justify-start">
+          <div class="row d-flex flex-justify-start" style="width: 100%">
+            <blockquote>
+              <p><Strong>Nombre: </Strong>{{usuario.nombre | titlecase}} {{usuario.apellido | titlecase}}</p>
+              <p><Strong>Cédula: </Strong>{{usuario.cedula | titlecase}}</p>
+              <p><Strong>Género: </Strong>{{usuario.sexo.tipo | titlecase}}</p>
+              <p><Strong>Télefono: </Strong>{{usuario.telefono }}</p>
+              <p><Strong>Roles: </Strong></p>
+              <p *ngFor="let rol of usuario.roles">{{rol.nombre}}</p>
+            </blockquote>
+          </div>
+      </div>
+  </div>
+  <!-- modal para ver el qr -->
+  <div class="modal-footer">
+      <div class="d-flex flex-justify-center w-100" >
+          <button type="button" 
+                  class="button shadowed button-usuario w-100" 
+                  (click)="modal.close('Close click')">
+            Ok!
+          </button>
+      </div>
+  </div>
+</ng-template>

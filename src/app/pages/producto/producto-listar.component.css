@@ -1,0 +1,21 @@
+.delete {
+    outline-color: #ecaba7;
+    background-color: #CE352C;
+    color: #ffffff;
+    border-color: transparent;
+}
+
+.delete:hover {
+    outline-color: #ecaba7;
+    background-color: #CE352C;
+    color: #ffffff;
+    border-color: transparent;
+}
+
+.delete:active {
+    box-shadow: 0 0 0 3px rgba(206, 53, 44, 0.45);
+}
+
+.delete:focus {
+    box-shadow: 0 0 0 3px rgba(206, 53, 44, 0.45);
+}

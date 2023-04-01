@@ -1,0 +1,83 @@
+.contenedor-img .contenedor-img-vista {
+    grid-area: img-grid;
+    min-width: 170px;
+    min-height: 280px;
+    padding: 0px 20px 20px 20px;
+}
+
+.contenedor-img-vista .img-vista {
+    border: 2px dashed #949ba1;
+    min-width: 100%;
+    height: 280px;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-vista-producto {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.contenedor-img .btn-img-pro {
+    background-color: #23272B;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 auto 0;
+    height: 40px;
+    overflow: hidden;
+    padding: 5px;
+    position: relative;
+    text-align: center;
+    width: 300px;
+    border-radius: 5px;
+}
+
+
+/* boton file */
+
+.file {
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+    position: absolute;
+}
+
+.file-input label {
+    display: block;
+    position: relative;
+    width: 200px;
+    height: 50px;
+    background: linear-gradient(40deg, #afabad, #2b2a36);
+    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    cursor: pointer;
+    font-size: medium;
+    transition: transform .2s ease-out;
+}
+
+.file-name {
+    position: absolute;
+    bottom: -35px;
+    left: 10px;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+input:hover+label,
+input:focus+label {
+    transform: scale(1.02);
+}
+
+input:focus+label {
+    outline: 1px solid #000;
+    outline: -webkit-focus-ring-color auto 2px;
+}

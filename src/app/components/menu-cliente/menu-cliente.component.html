@@ -1,0 +1,48 @@
+<div class="container-fluid pl-0 w-100" style="background-color: #eee">
+  <div class="grid">
+    <div class="row">
+      <div class="cell-sm pt-0 pb-0 pr-0">
+        <body>
+          <aside class="side-bar animated fadeIn">
+            <div
+              data-role="navview"
+              data-compact="md"
+              data-expand="lg"
+              class="navview navview-compact-md navview-expand-lg js-compact"
+              data-toggle="#pane-toggle"
+            >
+              <nav class="navview-pane">
+                <div class="navview-container">
+                  <button class="pull-button">
+                    <span class="default-icon-menu"></span>
+                  </button>
+                </div>
+                <!-- data menu -->
+                <app-cliente-sidebar
+                  [categorias]="categorias"
+                  [categoriascombos]="categoriascombos"
+                  class="navview-menu-container"
+                  style="height: calc(100% - 104px)"
+                ></app-cliente-sidebar>
+              </nav>
+              <div class="navview-content">
+                <app-nav-bar></app-nav-bar>
+                <div class="contenido">
+                  <router-outlet></router-outlet>
+                  <!-- boton estatico -->
+                  <button
+                    class="button dark cycle large outline boton-float"
+                    [routerLink]="['/cliente/home/mesa/', mesa_id]"
+                  >
+                    <i class="fas fa-home"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </body>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

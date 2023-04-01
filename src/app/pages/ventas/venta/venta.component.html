@@ -1,0 +1,582 @@
+<div class="card">
+  <div class="card-body" style="margin-top: 0px">
+    <div class="grid">
+      <div class="row">
+        <div class="cell-12">
+          <div class="d-flex justify-content-end">
+            <button
+              class="button shadowed"
+              (click)="abrirModalPedidosMen(modalPedidoMemoria)"
+              placement="bottom"
+              ngbTooltip="Ver pedido guardado"
+            >
+              <i class="fas fa-list"></i>
+            </button>
+            <button
+              class="button shadowed light"
+              (click)="AlmacenarEnMemoria()"
+              placement="left"
+              ngbTooltip="Guardar pedido temporal"
+            >
+              <i class="fas fa-save"></i>
+            </button>
+          </div>
+        </div>
+        <div class="cell-xxl-4 cell-xl-4 cell-sm-12 fondo-recibo">
+          <input
+            class="mb-4 mt-1"
+            type="text"
+            data-role="input"
+            data-prepend="CI: "
+            name="cliente_busqueda"
+            [(ngModel)]="buscarClienteCedula"
+            (change)="buscarClientePorCedula($event)"
+            [disabled]="ConsumidorFinal"
+          />
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <button
+              class="button shadowed yellow"
+              (click)="abrirModalCliente(modalCliente)"
+            >
+              Nuevo cliente
+            </button>
+            <input
+              type="checkbox"
+              data-role="checkbox"
+              data-caption="Consumidor final"
+              name="consumidorFinal"
+              [(ngModel)]="ConsumidorFinal"
+              (change)="ConsumidorFilanEstado()"
+            />
+          </div>
+          <!-- mesa # -->
+          <div class="d-flex justify-content-between mb-4">
+            <input
+              type="text"
+              data-role="input"
+              [placeholder]="mesa.nombre || 'Seleccionar mesa'"
+              name="mesa_pedido"
+              (click)="abrirModalMesa(modalMesa)"
+            />
+            <!-- <input class="button shadowed warning" [value]="mesa.nombre || 'Seleccionar mesa'" (click)="abrirModalMesa(modalMesa)"> -->
+          </div>
+
+          <!-- estado pedido -->
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <label
+                class="input-group-text"
+                for="inputGroupSelect01"
+                style="border-right-color: transparent"
+                >Estado pedido:</label
+              >
+            </div>
+            <select
+              [compareWith]="compararEstados"
+              name="estado_pedido"
+              class="custom-select"
+              name="Tipocategorias"
+              [(ngModel)]="pedido.estado"
+            >
+              <option [ngValue]="undefined">Seleccione...</option>
+              <option
+                value="1"
+                [ngValue]="estado"
+                *ngFor="let estado of estados"
+              >
+                {{ estado.nomEstado }}
+              </option>
+            </select>
+          </div>
+          <!-- tipo # -->
+          <hr />
+          <h6>Filtrar por:</h6>
+          <div class="d-flex justify-content-between mb-4">
+            <input
+              type="radio"
+              data-role="radio"
+              name="venta"
+              value="plato"
+              data-caption="Plato"
+              [checked]="radioIsProducto"
+              (change)="SeleccionDeFiltrado('plato')"
+            />
+            <input
+              type="radio"
+              data-role="radio"
+              value="combo"
+              name="venta"
+              data-caption="Especial"
+              (change)="SeleccionDeFiltrado('combo')"
+            />
+          </div>
+          <!-- productos -->
+          <div *ngIf="radioIsProducto">
+            <input
+              data-role="input"
+              class="mb-2"
+              data-prepend="Agregar:"
+              type="text"
+              name="producto"
+              placeholder="nombre producto"
+              [ngbTypeahead]="searchProductos"
+              [inputFormatter]="seleccionarProducto"
+              [resultFormatter]="formatterProducto"
+            />
+          </div>
+          <div *ngIf="!radioIsProducto">
+            <!--Combos-->
+            <input
+              data-role="input"
+              class="mb-2"
+              data-prepend="Agregar:"
+              type="text"
+              name="combo"
+              placeholder="nombre combo"
+              [ngbTypeahead]="searchCombos"
+              [inputFormatter]="seleccionarCombo"
+              [resultFormatter]="formatterCombo"
+            />
+          </div>
+          <!-- botones -->
+          <div class="d-flex justify-content-around mt-75 p-2">
+            <button
+              class="button shadowed alert rounded-0"
+              (click)="restablecerCampos()"
+            >
+              Cancelar
+            </button>
+            <button
+              class="button shadowed bg-black"
+              (click)="finalizarPedido(modalTipoPago)"
+            >
+              Finalizar
+              <i class="fas fa-print"></i>
+            </button>
+            <button
+              class="button shadowed bg-black"
+              (click)="registrarPedido()"
+            >
+              Guardar pedido
+            </button>
+          </div>
+        </div>
+
+        <!-- detalle  de los pedidos -->
+        <div class="cell-xxl-8 cell-xl-8 cell-sm-12 pl-5">
+          <!-- recibo -->
+          <div>
+            <div class="text-center">
+              <h3 class="m-0 mb-1">Nombre empresa</h3>
+              <h4 class="text-leader2 m-0">Recibo</h4>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between">
+              <div>
+                <h5 class="text-leader2 m-0 mb-2">
+                  <strong>Fecha: </strong><small>02/03/2021</small>
+                </h5>
+                <h5 class="text-leader2 m-0 mb-2">
+                  <strong>Cliente: </strong
+                  ><small>{{
+                    cliente.nombres + " " + cliente.apellidos
+                  }}</small>
+                </h5>
+                <h5 class="text-leader2 m-0 mb-2">
+                  <strong>Dirección: </strong
+                  ><small>{{ cliente.direccion }}</small>
+                </h5>
+              </div>
+              <div>
+                <h5 class="text-leader2 m-0 mb-2">
+                  <strong>RUC/CI: </strong><small>{{ cliente.cedula }}</small>
+                </h5>
+                <h5 class="text-leader2 m-0 mb-2">
+                  <strong>Teléfono: </strong
+                  ><small>{{ cliente.celular }}</small>
+                </h5>
+              </div>
+            </div>
+          </div>
+          <!-- tabla -->
+          <div>
+            <table class="table row-hover row-border">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Contiene</th>
+                  <th>Categoría</th>
+                  <th>Precio</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!--Tr de los productos-->
+                <tr *ngFor="let prod of pedido.items">
+                  <td>
+                    <img
+                      src="{{ api }}product/img/{{ prod.producto.imagen }}"
+                      alt=""
+                      width="50px"
+                      height="50px"
+                    />
+                  </td>
+                  <td>{{ prod.producto.nombre }}</td>
+                  <td>{{ prod.cantidad }}</td>
+                  <td>{{ prod.producto.categoria.nombre }}</td>
+                  <td>
+                    {{ calcularImporte(prod.cantidad, prod.producto.precio) }}
+                  </td>
+                  <td>
+                    <div
+                      class="d-flex justify-content-center align-items-center"
+                    >
+                      <div class="cell-xl-3 cell-sm-1">
+                        <button
+                          class="button alert shadowed border-radius-1 mb-0"
+                          (click)="eliminarProdPedido(prod.producto.id)"
+                        >
+                          <i class="far fa-trash-alt"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <!--Tr de los combos-->
+                <tr *ngFor="let comb of pedido.combos">
+                  <td>
+                    <img
+                      src="{{ api }}product/img/{{ comb.combo.imagen }}"
+                      alt=""
+                      width="50px"
+                      height="50px"
+                    />
+                  </td>
+                  <td>{{ comb.combo.nombre }}</td>
+                  <td>{{ comb.cantidad }}</td>
+                  <td>{{ comb.combo.categoria.nombre }}</td>
+                  <td>
+                    {{ calcularImporte(comb.cantidad, comb.combo.precio) }}
+                  </td>
+                  <td>
+                    <div
+                      class="d-flex justify-content-around align-items-center"
+                    >
+                      <div class="cell-xl-3 cell-sm-1">
+                        <button
+                          class="button warning shadowed"
+                          (click)="abrirModalDetalle(modalDetalleCombo, comb)"
+                        >
+                          <i class="far fa-list-alt"></i>
+                        </button>
+                      </div>
+                      <div class="cell-xl-3 cell-sm-1">
+                        <button
+                          class="button alert shadowed border-radius-1 mb-0"
+                          (click)="eliminarComboPedido(comb.combo.id)"
+                        >
+                          <i class="far fa-trash-alt"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- pie data -->
+          <hr />
+          <div>
+            <div class="d-flex justify-content-between">
+              <div></div>
+              <div>
+                <h5 class="text-leader2 m-0 mb-2">
+                  <strong>Total:</strong> <small>{{ calcularTotal() }}</small>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="min-height: 50px"></div>
+<!-- modal Cliente -->
+<ng-template #modalCliente let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Cliente</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-formulario-cliente
+      (reclienteRetorno)="AsignarCLienteRegistrado($event)"
+      [ocultarBotones]="true"
+      [cerrarModalRef]="modalReference"
+    ></app-formulario-cliente>
+  </div>
+</ng-template>
+<!-- modal Mesa -->
+<ng-template #modalMesa let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Seleccionar mesa</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- tabla -->
+    <div>
+      <table class="table row-hover row-border">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Seleccionar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let mes of mesas">
+            <td>{{ mes.id }}</td>
+            <td>{{ mes.nombre }}</td>
+            <td>
+              <button class="btn btn-primary" (click)="seleccionarMesa(mes)">
+                Asignar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="d-flex flex-justify-between w-100">
+      <button
+        class="button shadowed alert rounded-0 w-25"
+        (click)="modal.close('Close click')"
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+</ng-template>
+<!-- modal de talle combo -->
+<ng-template #modalDetalleCombo let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ comboDetalle.nombre }}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- tabla -->
+    <div>
+      <table class="table row-hover row-border">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of comboDetalle.itemsCombo">
+            <td>
+              <img
+                src="{{ api }}product/img/{{ item.producto.imagen }}"
+                alt=""
+                width="50px"
+                height="50px"
+              />
+            </td>
+            <td>{{ item.producto.nombre }}</td>
+            <td>{{ item.cantidad }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- detalles -->
+    <p><strong>Descripción</strong></p>
+    <p class="m-0">{{ comboDetalle.descripcion }}</p>
+    <p><strong>Contenido</strong></p>
+    <span
+      class="text-secondary"
+      *ngFor="let items of comboDetalle.itemsCombo; let i = index"
+      >{{ items.cantidad }} {{ items.producto.nombre }}
+      <span *ngIf="i + 1 < comboDetalle.itemsCombo.length">+</span>
+    </span>
+    <p><strong></strong></p>
+  </div>
+  <div class="modal-footer">
+    <div class="d-flex flex-justify-end w-100">
+      <button
+        class="button shadowed alert rounded-0 w-25"
+        (click)="modal.close('Close click')"
+      >
+        cerrar
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- modal pedidos almacenados en memoria -->
+<ng-template #modalPedidoMemoria let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Seleccionar Pedido</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- tabla -->
+    <div>
+      <table class="table row-hover row-border">
+        <thead>
+          <tr>
+            <th>Descripcion</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ped of pedidosMemoria">
+            <td>{{ ped.enEspera }}</td>
+            <td>
+              <button
+                class="btn btn-primary"
+                (click)="CargarPedidoRecuperado(ped)"
+              >
+                Asignar
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-danger" (click)="eliminarPedidoLocal(ped)">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="d-flex flex-justify-between w-100">
+      <button
+        class="button shadowed alert rounded-0 w-25"
+        (click)="modal.close('Close click')"
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+</ng-template>
+<!-- modal pedidos almacenados en memoria -->
+<ng-template #modalTipoPago let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Tipo de pago</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="input-group mb-2">
+      <div class="input-group-prepend">
+        <label
+          class="input-group-text"
+          for="inputGroupSelect01"
+          style="border-right-color: transparent"
+          >Tipo pago:</label
+        >
+      </div>
+      <select
+        [compareWith]="compararMediosPago"
+        name="medio_pago"
+        class="custom-select"
+        name="MedioPago"
+        [(ngModel)]="movimiento.tipoPago"
+      >
+        <option [ngValue]="undefined">Seleccione...</option>
+        <option value="1" [ngValue]="tipo" *ngFor="let tipo of tiposPago">
+          {{ tipo.tipoPago }}
+        </option>
+      </select>
+    </div>
+    <!-- si no es un pago en efectivo  -->
+    <div *ngIf="movimiento.tipoPago && movimiento.tipoPago.id != 1">
+      <input
+        type="text"
+        data-role="input"
+        placeholder="Número de documento/Fólio"
+        data-append="# Doc/Fólio"
+        name="id_doc/folio"
+        [(ngModel)]="movimiento.tipoPago.folio"
+      />
+    </div>
+    <div *ngIf="movimiento.tipoPago && movimiento.tipoPago.id === 1">
+      <label for="">Monto:</label>
+      <input
+        type="number"
+        data-role="input"
+        data-prepend="$: "
+        required
+        minlength="1"
+        [(ngModel)]="MontoCambio"
+        (keyup)="calcularCambio($event)"
+      />
+      <div *ngIf="Cambio < 0" style="color: red;" >
+        Ingrese un valor correcto
+      </div>
+      <br />
+      <div class="d-flex justify-content-around">
+        <p class="mt-0">
+          <code class="warning">Total a pagar: </code> &#36;{{ calcularTotal() }}
+        </p>
+        <p class="mt-0"><code class="info">Cambio: </code> &#36;{{ Cambio }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="d-flex flex-justify-between w-100">
+      <button
+        class="button shadowed alert rounded-0 w-25"
+        (click)="modal.close('Close click')"
+      >
+        Cancelar
+      </button>
+      <button
+        class="button shadowed bg-black rounded-0 w-25"
+        [disabled]="!movimiento.tipoPago"
+        (click)="enviarPedidoFinalizado()"
+      >
+        Finalizar
+      </button>
+    </div>
+  </div>
+</ng-template>

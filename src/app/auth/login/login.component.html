@@ -1,0 +1,64 @@
+<body class="all-window">
+  <div class="container-fluid d-flex justify-content-center" id="contenedor">
+    <div class="grid d-flex justify-content-center">
+      <div class="row">
+        <div class="cell-12">
+          <div  class="card w-75-xxl w-75-xl w-75-lg w-75-md w-100-sm w-100 mt-10 mt-15-md">
+            <div class="card-body">
+              <div class="row">
+                <div
+                  class="cell-xl-6 cell-xxl-6 cell-lg-6 cell-md-6 cell-sm-12 order-xxl-1 order-xl-1 order-lg-1 order-md-1 order-2 d-flex justify-content-center"
+                >
+                  <form
+                    class="w-75-xxl w-75-xl w-75-lg w-75-md w-100-sm w-100"
+                    (ngSubmit)="logIn()">
+                    <div
+                      class="d-flex flex-column justify-content-center h-100 w-100">
+
+                      <div class="d-flex justify-content-center">
+                        <h4>Bienvenido</h4>
+                      </div>
+                      <input  type="text"
+                              class="mb-5"
+                              data-role="input"
+                              placeholder="Usuario"
+                              [(ngModel)]="usuario.username"
+                              name="username"
+                              id="username"
+                              autocomplete="off"
+                              autofocus
+                              required/>
+                      <input  type="password"
+                              class="mb-5"
+                              data-role="input"
+                              placeholder="Contraseña"
+                              [(ngModel)]="usuario.password"
+                              name="password"
+                              id="password"
+                              placeholder="Password"
+                              required/>
+                      <input  type="submit"
+                              class="mb-5"
+                              class="button shadowed primary"
+                              value="Iniciar sesión"/>
+                      <div class="w-100 d-flex justify-content-center c-pointer">
+                        <a  class="mt-2 decoration"
+                            [routerLink]="['/recuperar']">¿Has olvidado la contraseña?</a>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div
+                  class="cell-xl-6 cell-xxl-6 cell-lg-6 cell-md-6 cell-sm-12 order-xxl-2 order-xl-2 order-lg-2 order-md-2 order-1 d-flex justify-content-center"
+                >
+                  <img  src="assets/img/logo.jpg"
+                        class="w-100-xxl w-75-xl w-100-lg w-100-md w-50-sm w-75"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

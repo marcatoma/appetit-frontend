@@ -1,0 +1,157 @@
+<div class="card">
+    <div class="card-body">
+        <!-- Barra para añadir -->
+        <div class="row">
+            <div class="cell-3 text-left">
+                <div class="d-flex flex-justify-start">
+                    <h5>Lista cajas</h5>
+                </div>
+            </div>
+            <div class="cell-3 offset-6 text-right">
+                <div class="d-flex flex-justify-end">
+                    <a class="button primary shadowed btn-block" (click)="abrirModalCaja(modalCaja, undefined)">Añadir</a
+          >
+        </div>
+      </div>
+    </div>
+    <!-- Acciones y input para filtrar -->
+    <div class="row">
+      <div class="cell-3 offset-6">
+        <div class="d-flex flex-justify-between">
+          <input type="text" data-role="input" data-prepend="Buscar: " />
+        </div>
+      </div>
+      <div class="cell-3 offset-0">
+        <div class="d-flex flex-justify-between">
+          <button class="button info shadowed btn-block">Acciones</button>
+        </div>
+      </div>
+    </div>
+    <!-- Tabla -->
+    <div class="row">
+      <div class="cell-sm">
+        <table class="table row-hover row-border">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of cajas">
+              <td>{{ c.numeroCaja }}</td>
+              <td>{{ c.nombreCaja }}</td>
+              <td>
+                <div class="row row-width alinear">
+                  <div class="cell-sm-4">
+                    <button
+                      class="button shadowed primary"
+                      (click)="abrirModalCaja(modalCaja, c)"
+                    >
+                      <span class="ml-1"
+                        >Editar <i class="fas fa-edit ml-1"></i
+                      ></span>
+                    </button>
+                  </div>
+                  <div class="cell-sm-4">
+                    <button
+                      class="button outline alert mb-0 rounded-0"
+                      (click)="eliminarCaja(c)"
+                    >
+                      <span class="ml-1"
+                        >Borrar<i class="fas fa-trash-alt ml-1"></i
+                      ></span>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- paginador -->
+        <div class="row">
+          <div class="cell-12 d-flex flex-justify-end">
+            <!-- componente paginador -->
+            <app-paginator
+              *ngIf="paginador"
+              [paginador]="paginador"
+              [path]="path"
+            ></app-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Spinner -->
+    <div class="row">
+      <div class="cell">
+        <div>
+          <app-spinner></app-spinner>
+        </div>
+      </div>
+    </div>
+    <!-- paginador -->
+    <div class="row">
+      <div class="cell-12 d-flex flex-justify-end">
+        <!-- componente paginador -->
+        <!-- <app-paginator
+          ></app-paginator> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- modal para crear o editar cajas -->
+<ng-template #modalCaja let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Caja</h4>
+    <!--errores desde el backend-->
+    <div class="container" *ngIf="errores.length != 0">
+      <div class="alert alert-danger" role="alert" *ngFor="let err of errores">
+        {{ err }}
+      </div>
+    </div>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- numero caja -->
+    <input
+      type="text"
+      class="mb-5"
+      data-role="input"
+      data-prepend="Código/Número caja: "
+      name="numCaja"
+      [(ngModel)]="caja.numeroCaja"
+    />
+    <!-- nombre caja -->
+    <input
+      type="text"
+      data-role="input"
+      data-prepend="Nombre caja: "
+      name="nombre_caja"
+      [(ngModel)]="caja.nombreCaja"
+    />
+  </div>
+  <div class="modal-footer d-flex justify-content-around">
+    <button
+      type="button"
+      class="button outline alert mb-0 rounded-0"
+      (click)="modal.dismiss('Cross click')"
+    >
+      Cancelar
+    </button>
+    <button
+      type="button"
+      class="button shadowed bg-black"
+      (click)="registrarCaja()"
+    >
+      Guardar
+    </button>
+  </div>
+</ng-template>
